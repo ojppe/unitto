@@ -112,6 +112,16 @@ class FormatterExpressionTest {
   }
 
   @Test
+  fun formatExpression_testMultipleBigNumbers() {
+    assertFormatExpression(
+      unformatted = "123+1234+12345+123456+1234567",
+      spaceAndPeriod = "123+1 234+12 345+123 456+1 234 567",
+      commaAndPeriod = "123+1,234+12,345+123,456+1,234,567",
+      periodAndComma = "123+1.234+12.345+123.456+1.234.567",
+    )
+  }
+
+  @Test
   fun formatExpression_testIncompleteExpression() {
     assertFormatExpression(
       unformatted = "50+123456÷8×0.8-12+",

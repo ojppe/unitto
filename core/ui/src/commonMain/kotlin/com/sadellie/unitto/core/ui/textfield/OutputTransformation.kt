@@ -64,7 +64,10 @@ data class ExpressionOutputTransformation(private val formatterSymbols: Formatte
   private fun TextFieldBuffer.formatNoFractional() {
     // starts and ends of numbers
     val numberPositions = this.findNumberPositions()
-    numberPositions.forEach { (start, end) -> formatNumber(start, end) }
+    var shift = 0
+    numberPositions.forEach { (start, end) ->
+      shift += formatNumber(start + shift, end + shift)
+    }
   }
 
   private fun TextFieldBuffer.findNumberPositions(): Set<Pair<Int, Int>> {
@@ -79,8 +82,10 @@ data class ExpressionOutputTransformation(private val formatterSymbols: Formatte
    * Format number at given position. [start] is inclusive, [end] is exclusive.
    *
    * if string is 12345, and you want to pass 123: start is 0, end is 3
+   *
+   * @return Number of inserted symbols
    */
-  private fun TextFieldBuffer.formatNumber(start: Int, end: Int) {
+  private fun TextFieldBuffer.formatNumber(start: Int, end: Int): Int {
     val originalNumber = this.asCharSequence().substring(start, end)
     val formattedNumber = originalNumber.formatNumber(formatterSymbols)
     formattedNumber.forEachIndexed { index, char ->
@@ -95,6 +100,7 @@ data class ExpressionOutputTransformation(private val formatterSymbols: Formatte
         fractionalChar -> replace(indexInBuffer, indexInBuffer + 1, formatterSymbols.fractional)
       }
     }
+    return formattedNumber.length - originalNumber.length
   }
 }
 

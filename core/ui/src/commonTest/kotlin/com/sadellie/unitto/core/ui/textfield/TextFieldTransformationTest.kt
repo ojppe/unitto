@@ -74,7 +74,7 @@ class TextFieldTransformationTest {
     transformAndCompare("[]cos(1)+1,234", "[]cos(1)+1.234")
     transformAndCompare("cos(1)+1,2[]34", "cos(1)+1.2[]34")
     transformAndCompare("cos(1)+123[].456,789", "cos(1)+123[]456.789")
-    transformAndCompare("1[].234, .", "1[]234. .")
+    transformAndCompare("1[].234, ,", "1[]234. .")
     transformAndCompare("1.234 3⁄4[]", "1234 3⁄4[]")
   }
 

@@ -44,11 +44,19 @@ private fun String.formatFraction(formatterSymbols: FormatterSymbols): String {
 
 private fun String.formatExpressionNoFraction(formatterSymbols: FormatterSymbols): String {
   var input = this
-  val allNumberInInput = mutableSetOf<String>()
-  input.findNumbers { _, number -> allNumberInInput.add(number) }
+  val numberPositions = mutableSetOf<Pair<Int, Int>>()
+  this.findNumbers { startIndex, number ->
+    numberPositions.add(startIndex to startIndex + number.length)
+  }
 
-  // format numbers
-  allNumberInInput.forEach { input = input.replace(it, it.formatNumber(formatterSymbols)) }
+  var shift = 0
+  numberPositions.forEach { (start, end) ->
+    val number = input.substring(start + shift, end + shift)
+    val formattedNumber = number.formatNumber(formatterSymbols)
+    val updatedInput = input.replaceRange(start + shift, end + shift, formattedNumber)
+    shift += formattedNumber.length - number.length
+    input = updatedInput
+  }
 
   // Replace ugly symbols
   Token.sexyToUgly.forEach { (token, uglySymbols) ->

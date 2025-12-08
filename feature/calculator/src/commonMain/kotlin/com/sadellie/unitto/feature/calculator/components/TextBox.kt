@@ -27,6 +27,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.KeyboardActionHandler
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
@@ -36,6 +38,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.common.FormatterSymbols
@@ -55,6 +58,7 @@ fun TextBox(
   formatterSymbols: FormatterSymbols,
   state: TextFieldState,
   output: CalculationResult,
+  onEnter: () -> Unit,
   showHandle: Boolean,
 ) {
   Column(
@@ -79,6 +83,12 @@ fun TextBox(
       minRatio = 0.5f,
       formatterSymbols = formatterSymbols,
       textColor = MaterialTheme.colorScheme.onSurfaceVariant,
+      keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+      onKeyboardAction =
+        KeyboardActionHandler {
+          onEnter()
+          it()
+        },
     )
     if (LocalWindowSize.current.heightSizeClass > WindowHeightSizeClass.Compact) {
       CalculationResultTextField(
@@ -146,6 +156,7 @@ private fun PreviewTextBox() {
     formatterSymbols = FormatterSymbols(Token.SPACE, Token.COMMA),
     state = TextFieldState("123456.789"),
     output = CalculationResult.Success("789012.345"),
+    onEnter = {},
     showHandle = true,
   )
 }
@@ -158,6 +169,7 @@ private fun PreviewTextBoxNoHandle() {
     formatterSymbols = FormatterSymbols(Token.SPACE, Token.COMMA),
     state = TextFieldState("123456.789"),
     output = CalculationResult.Success("789012.345"),
+    onEnter = {},
     showHandle = false,
   )
 }

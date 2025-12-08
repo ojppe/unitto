@@ -76,6 +76,8 @@ fun ExpressionTextField(
   formatterSymbols: FormatterSymbols,
   readOnly: Boolean = false,
   placeholder: String = "",
+  keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+  onKeyboardAction: KeyboardActionHandler? = null,
 ) {
   val nativeClipboard = LocalClipboard.current.nativeClipboard
   val clipboardManager =
@@ -99,6 +101,8 @@ fun ExpressionTextField(
       minRatio = minRatio,
       placeholder = placeholder,
       displayedText = displayedText,
+      keyboardOptions = keyboardOptions,
+      onKeyboardAction = onKeyboardAction,
     )
   }
 }

@@ -285,6 +285,7 @@ private fun ReadyCompact(
           formatterSymbols = uiState.formatterSymbols,
           state = uiState.input,
           output = uiState.output,
+          onEnter = onEqualClick,
           showHandle = true,
         )
       },
@@ -376,6 +377,7 @@ private fun ReadyExpanded(
             formatterSymbols = uiState.formatterSymbols,
             state = uiState.input,
             output = uiState.output,
+            onEnter = onEqualClick,
             showHandle = false,
           )
           val focusManager = LocalFocusManager.current

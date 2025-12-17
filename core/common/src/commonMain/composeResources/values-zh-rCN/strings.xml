@@ -587,7 +587,7 @@
     <string name="unit_megaton">兆吨三硝基甲苯释放的能量</string>
     <string name="unit_megaton_short">Mt</string>
     <string name="unit_megawatt">兆瓦特</string>
-    <string name="unit_megawatt_short">MG</string>
+    <string name="unit_megawatt_short">MW</string>
     <string name="unit_megaweber_short">MWb</string>
     <string name="unit_mercury_equatorial_radius">水星赤道半径</string>
     <string name="unit_mercury_equatorial_radius_short">水星 R</string>

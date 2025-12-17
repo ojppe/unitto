@@ -579,7 +579,7 @@
     <string name="unit_megaton">1 megatonna TNT</string>
     <string name="unit_megaton_short">Mt</string>
     <string name="unit_megawatt">Megawatt</string>
-    <string name="unit_megawatt_short">MG</string>
+    <string name="unit_megawatt_short">MW</string>
     <string name="unit_megaweber">Megaweber</string>
     <string name="unit_megaweber_short">MWb</string>
     <string name="unit_mercury_equatorial_radius">Merkúr egyenlítői sugara</string>

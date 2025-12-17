@@ -26,6 +26,8 @@ import com.sadellie.unitto.core.model.converter.unit.NormalUnit
 import unitto.core.common.generated.resources.Res
 import unitto.core.common.generated.resources.unit_attoliter
 import unitto.core.common.generated.resources.unit_attoliter_short
+import unitto.core.common.generated.resources.unit_centiliter
+import unitto.core.common.generated.resources.unit_centiliter_short
 import unitto.core.common.generated.resources.unit_cubic_centimeter
 import unitto.core.common.generated.resources.unit_cubic_centimeter_short
 import unitto.core.common.generated.resources.unit_cubic_foot
@@ -42,6 +44,8 @@ import unitto.core.common.generated.resources.unit_cubic_millimeter
 import unitto.core.common.generated.resources.unit_cubic_millimeter_short
 import unitto.core.common.generated.resources.unit_cubic_yard
 import unitto.core.common.generated.resources.unit_cubic_yard_short
+import unitto.core.common.generated.resources.unit_deciliter
+import unitto.core.common.generated.resources.unit_deciliter_short
 import unitto.core.common.generated.resources.unit_imperial_cup
 import unitto.core.common.generated.resources.unit_imperial_cup_short
 import unitto.core.common.generated.resources.unit_imperial_fluid_ounce
@@ -95,15 +99,15 @@ internal val volumeCollection: List<BasicUnit> by lazy {
       UnitID.centiliter,
       KBigDecimal("10000000000000000"),
       UnitGroup.VOLUME,
-      Res.string.unit_milliliter,
-      Res.string.unit_milliliter_short,
+      Res.string.unit_centiliter,
+      Res.string.unit_centiliter_short,
     ),
     NormalUnit(
       UnitID.deciliter,
       KBigDecimal("100000000000000000"),
       UnitGroup.VOLUME,
-      Res.string.unit_milliliter,
-      Res.string.unit_milliliter_short,
+      Res.string.unit_deciliter,
+      Res.string.unit_deciliter_short,
     ),
     NormalUnit(
       UnitID.liter,

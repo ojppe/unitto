@@ -34,7 +34,7 @@ fun TextFieldState.addTokens(tokens: String) {
     Token.Operator.MULTIPLY,
     Token.Operator.DIVIDE,
     Token.Operator.POWER -> {
-      val tokenAhead = text.toString().tokenAhead(selection.start)
+      val tokenAhead = text.toString().tokenAhead(selection.min)
       if (tokenAhead == Token.Operator.PLUS) return deleteAheadAndAdd(tokens)
       if (tokenAhead == Token.Operator.MINUS) return deleteAheadAndAdd(tokens)
       if (tokenAhead == Token.Operator.MULTIPLY) return deleteAheadAndAdd(tokens)
@@ -44,24 +44,24 @@ fun TextFieldState.addTokens(tokens: String) {
       if (tokenAhead == "") return deleteTokens()
     }
     Token.Operator.MINUS -> {
-      val tokenAhead = text.toString().tokenAhead(selection.start)
+      val tokenAhead = text.toString().tokenAhead(selection.min)
       if (tokenAhead == Token.Operator.PLUS) return deleteAheadAndAdd(tokens)
       if (tokenAhead == Token.Operator.MINUS) return deleteAheadAndAdd(tokens)
     }
     Token.Digit.DOT -> {
-      val tokenAhead = text.toString().tokenAhead(selection.start)
+      val tokenAhead = text.toString().tokenAhead(selection.min)
       if (tokenAhead == Token.Digit.DOT) return deleteAheadAndAdd(tokens)
     }
   }
 
   this.edit {
-    replace(selection.start, selection.end, tokens)
-    selection = TextRange(selection.end)
+    replace(selection.min, selection.max, tokens)
+    selection = TextRange(selection.max)
   }
 }
 
 fun TextFieldState.addBracket() {
-  val subStringBeforeCursor = text.substring(0..<selection.start)
+  val subStringBeforeCursor = text.substring(0..<selection.min)
 
   // Always open when empty in front
   if (subStringBeforeCursor.isEmpty()) {
@@ -78,7 +78,7 @@ fun TextFieldState.addBracket() {
       Token.Operator.MINUS,
       Token.Operator.POWER,
     )
-  if (text.toString().tokenAfter(selection.start) in openBeforeOperators) {
+  if (text.toString().tokenAfter(selection.min) in openBeforeOperators) {
     addTokens(Token.Operator.RIGHT_BRACKET)
     return
   }
@@ -106,7 +106,7 @@ fun TextFieldState.addBracket() {
       Token.Operator.POWER,
       Token.Operator.LEFT_BRACKET,
     )
-  if (text.toString().tokenAhead(selection.start) in openAfterOperators) {
+  if (text.toString().tokenAhead(selection.min) in openAfterOperators) {
     addTokens(Token.Operator.LEFT_BRACKET)
     return
   }
@@ -116,20 +116,20 @@ fun TextFieldState.addBracket() {
 
 fun TextFieldState.deleteTokens() {
   val deleteRangeStart =
-    when (selection.end) {
+    when (selection.max) {
       // Don't delete if at the start of the text field
       0 -> return
       // We don't have anything selected (cursor in one position)
       // like this 1234|56 => after deleting will be like this 123|56
       // Cursor moved one symbol left
-      selection.start -> selection.start - text.toString().tokenLengthAhead(selection.end)
+      selection.min -> selection.min - text.toString().tokenLengthAhead(selection.max)
       // We have multiple symbols selected
       // like this 123[45]6 => after deleting will be like this 123|6
       // Cursor will be placed where selection start was
-      else -> selection.start
+      else -> selection.min
     }
 
-  this.edit { delete(deleteRangeStart, selection.end) }
+  this.edit { delete(deleteRangeStart, selection.max) }
 }
 
 fun TextFieldState.placeCursorAtTheEnd() = edit { placeCursorAtEnd() }
@@ -152,7 +152,7 @@ fun TextFieldState.observe(debounceMs: Long = TEXT_FIELD_STATE_DEBOUNCE_MS) =
 private fun TextFieldState.deleteAheadAndAdd(tokens: String) {
   // For cases like: "12+[34]" and "*" symbol is being added. Will delete selected tokens
   if (!selection.collapsed) {
-    this.edit { delete(this.selection.start, this.selection.end) }
+    this.edit { delete(this.selection.min, this.selection.max) }
   }
   this.deleteTokens()
   this.addTokens(tokens)

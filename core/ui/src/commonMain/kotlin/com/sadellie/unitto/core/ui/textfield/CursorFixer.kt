@@ -39,7 +39,7 @@ fun CharSequence.fixCursor(pos: Int): Int {
 
 fun TextFieldBuffer.fixTextRange(): TextRange {
   val text = this.asCharSequence()
-  return TextRange(text.fixCursor(selection.start), text.fixCursor(selection.end))
+  return TextRange(text.fixCursor(selection.min), text.fixCursor(selection.max))
 }
 
 /**

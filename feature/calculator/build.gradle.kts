@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2025 Elshan Agaev
+ * Copyright (c) 2023-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,6 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import com.android.build.api.dsl.androidLibrary
+
 plugins {
   id("unitto.multiplatform.library")
   alias(libs.plugins.compose.compiler)
@@ -24,6 +26,7 @@ plugins {
 }
 
 kotlin {
+  androidLibrary { namespace = "com.sadellie.unitto.feature.calculator" }
   sourceSets.commonMain.dependencies {
     implementation(project(":core:designsystem"))
     implementation(project(":core:common"))
@@ -53,13 +56,5 @@ kotlin {
     implementation(libs.org.jetbrains.kotlin.kotlin.test)
     implementation(libs.org.jetbrains.kotlinx.kotlinx.coroutines.test)
   }
-  sourceSets.androidInstrumentedTest.dependencies {
-    implementation(libs.androidx.compose.ui.test.junit4)
-  }
-}
-
-android {
-  namespace = "com.sadellie.unitto.feature.calculator"
-  buildFeatures.compose = true
-  composeOptions.kotlinCompilerExtensionVersion = libs.versions.androidxComposeCompiler.get()
+  sourceSets.androidDeviceTest.dependencies { implementation(libs.androidx.compose.ui.test.junit4) }
 }

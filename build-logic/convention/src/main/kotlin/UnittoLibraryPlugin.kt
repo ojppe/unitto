@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2025 Elshan Agaev
+ * Copyright (c) 2023-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,6 +17,8 @@
  */
 
 import com.android.build.api.dsl.LibraryExtension
+import com.android.build.api.dsl.androidLibrary
+import kotlin.jvm.optionals.getOrNull
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -35,19 +37,26 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinBaseExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
-import kotlin.jvm.optionals.getOrNull
 
 @Suppress("UNUSED")
 class UnittoMultiplatformLibraryPlugin : Plugin<Project> {
   override fun apply(target: Project) {
     with(target) {
       apply(plugin = libs.getPlugin("multiplatform"))
-      apply(plugin = libs.getPlugin("android.library"))
+      apply(plugin = libs.getPlugin("android.multiplatform.library"))
 
       extensions.configure<KotlinMultiplatformExtension> {
-        androidTarget {
+        androidLibrary {
+          compileSdk = 36
+          minSdk = 23
           @OptIn(ExperimentalKotlinGradlePluginApi::class)
-          compilerOptions { jvmTarget.set(JvmTarget.JVM_11) }
+          compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_11)
+            enableCoreLibraryDesugaring = true
+          }
+          androidResources { enable = true }
+          withDeviceTest { this.instrumentationRunner = "androidx.test.runner.AndroidJUnitRunner" }
+          withHostTest {}
         }
         @OptIn(ExperimentalWasmDsl::class)
         wasmJs {
@@ -73,11 +82,6 @@ class UnittoMultiplatformLibraryPlugin : Plugin<Project> {
             }
           }
         }
-      }
-      extensions.configure<LibraryExtension> {
-        compileSdk = 36
-        defaultConfig.minSdk = 23
-        compileOptions.isCoreLibraryDesugaringEnabled = true
       }
       dependencies {
         "coreLibraryDesugaring"(libs.findLibrary("com.android.tools.desugar.jdk.libs").get())

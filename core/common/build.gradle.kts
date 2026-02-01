@@ -1,8 +1,6 @@
-import com.codingfeline.buildkonfig.compiler.FieldSpec
-
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2025 Elshan Agaev
+ * Copyright (c) 2023-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,6 +15,9 @@ import com.codingfeline.buildkonfig.compiler.FieldSpec
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
+import com.android.build.api.dsl.androidLibrary
+import com.codingfeline.buildkonfig.compiler.FieldSpec
 
 plugins {
   id("unitto.multiplatform.library")
@@ -34,6 +35,7 @@ buildkonfig {
 }
 
 kotlin {
+  androidLibrary { namespace = "com.sadellie.unitto.core.common" }
   sourceSets.commonMain.dependencies {
     implementation(libs.org.jetbrains.compose.foundation.foundation)
     implementation(libs.org.jetbrains.compose.components.components.resources)
@@ -49,11 +51,5 @@ kotlin {
 }
 
 compose.resources { publicResClass = true }
-
-android {
-  namespace = "com.sadellie.unitto.core.common"
-  lint.warning.add("MissingTranslation")
-  compileOptions.isCoreLibraryDesugaringEnabled = true
-}
 
 dependencies { coreLibraryDesugaring(libs.com.android.tools.desugar.jdk.libs) }

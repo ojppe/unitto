@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2025 Elshan Agaev
+ * Copyright (c) 2023-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,12 +16,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import com.android.build.api.dsl.androidLibrary
+
 plugins {
   id("unitto.multiplatform.library")
   alias(libs.plugins.serialization)
 }
 
 kotlin {
+  androidLibrary { namespace = "com.sadellie.unitto.core.remote" }
   sourceSets.commonMain.dependencies {
     implementation(libs.io.ktor.ktor.client.core)
     implementation(libs.io.ktor.ktor.client.cio)
@@ -35,5 +38,3 @@ kotlin {
 
   sourceSets.wasmJsMain.dependencies { implementation(libs.io.ktor.ktor.client.js) }
 }
-
-android.namespace = "com.sadellie.unitto.core.remote"

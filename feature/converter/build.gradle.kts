@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2025 Elshan Agaev
+ * Copyright (c) 2023-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,6 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import com.android.build.api.dsl.androidLibrary
+
 plugins {
   id("unitto.multiplatform.library")
   alias(libs.plugins.compose.compiler)
@@ -24,6 +26,7 @@ plugins {
 }
 
 kotlin {
+  androidLibrary { namespace = "com.sadellie.unitto.feature.converter" }
   sourceSets.commonMain.dependencies {
     implementation(project(":core:common"))
     implementation(project(":core:ui"))
@@ -53,12 +56,5 @@ kotlin {
     implementation(libs.org.jetbrains.kotlin.kotlin.test)
     implementation(libs.org.jetbrains.kotlinx.kotlinx.coroutines.test)
   }
-  sourceSets.androidUnitTest.dependencies { implementation(libs.org.robolectric.robolectric) }
-}
-
-android {
-  namespace = "com.sadellie.unitto.feature.converter"
-  buildFeatures.compose = true
-  composeOptions.kotlinCompilerExtensionVersion = libs.versions.androidxComposeCompiler.get()
-  testOptions.unitTests.isIncludeAndroidResources = true
+  sourceSets.androidHostTest.dependencies { implementation(libs.org.robolectric.robolectric) }
 }

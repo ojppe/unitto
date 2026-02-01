@@ -532,7 +532,7 @@ private fun CompactKeyboardDefault(
     KeypadButtonTransparent(buttonModifier, angleKey, iconHeightSecondary) {
       onRadianModeClick(!radianMode)
     }
-    KeypadButtonTransparent(buttonModifier, ModuloKey, iconHeightSecondary, onAddTokenClick)
+    KeypadButtonTransparent(buttonModifier, RootKey, iconHeightSecondary, onAddTokenClick)
     KeypadButtonTransparent(buttonModifier, PiKey, iconHeightSecondary, onAddTokenClick)
     KeypadButtonLight(buttonModifier, Key7, iconHeight, onAddTokenClick)
     KeypadButtonLight(buttonModifier, Key8, iconHeight, onAddTokenClick)
@@ -556,9 +556,9 @@ private fun CompactKeyboardDefault(
     KeypadButtonFilled(buttonModifier, MultiplyKey, iconHeight, onAddTokenClick)
     KeypadButtonFilled(buttonModifier, DivideKey, iconHeight, onAddTokenClick)
 
-    KeypadButtonTransparent(buttonModifier, ArSinKey, iconHeightSecondary, onAddTokenClick)
-    KeypadButtonTransparent(buttonModifier, ArCosKey, iconHeightSecondary, onAddTokenClick)
-    KeypadButtonTransparent(buttonModifier, AcTanKey, iconHeightSecondary, onAddTokenClick)
+    KeypadButtonTransparent(buttonModifier, SinKey, iconHeightSecondary, onAddTokenClick)
+    KeypadButtonTransparent(buttonModifier, CosKey, iconHeightSecondary, onAddTokenClick)
+    KeypadButtonTransparent(buttonModifier, TanKey, iconHeightSecondary, onAddTokenClick)
     KeypadButtonLight(buttonModifier, Key1, iconHeight, onAddTokenClick)
     KeypadButtonLight(buttonModifier, Key2, iconHeight, onAddTokenClick)
     KeypadButtonLight(buttonModifier, Key3, iconHeight, onAddTokenClick)
@@ -566,8 +566,8 @@ private fun CompactKeyboardDefault(
     KeypadButtonFilled(buttonModifier, PercentKey, iconHeight, onAddTokenClick)
 
     KeypadButtonTransparent(buttonModifier, EulerKey, iconHeightSecondary, onAddTokenClick)
-    KeypadButtonTransparent(buttonModifier, ExKey, iconHeightSecondary, onAddTokenClick)
-    KeypadButtonTransparent(buttonModifier, Power10Key, iconHeightSecondary, onAddTokenClick)
+    KeypadButtonTransparent(buttonModifier, LnKey, iconHeightSecondary, onAddTokenClick)
+    KeypadButtonTransparent(buttonModifier, LogKey, iconHeightSecondary, onAddTokenClick)
     val fractionalKey = if (fractional == Token.PERIOD) DotKey else CommaKey
     if (middleZero) {
       KeypadButtonLight(buttonModifier, fractionalKey, iconHeight, onAddTokenClick)
@@ -620,6 +620,7 @@ private fun PreviewExpandedKeyboard() = ExpressivePreview {
 )
 @Composable
 private fun PreviewCompactKeyboard() = ExpressivePreview {
+  var inverseMode by remember { mutableStateOf(false) }
   CompactKeyboard(
     modifier = Modifier.fillMaxHeight(),
     onAddTokenClick = {},
@@ -629,8 +630,8 @@ private fun PreviewCompactKeyboard() = ExpressivePreview {
     onEqualClick = {},
     radianMode = true,
     onRadianModeClick = {},
-    inverseMode = false,
-    onInverseModeClick = {},
+    inverseMode = inverseMode,
+    onInverseModeClick = { inverseMode = it },
     showAcButton = true,
     middleZero = false,
     fractional = Token.PERIOD,

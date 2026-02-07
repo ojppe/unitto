@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2025 Elshan Agaev
+ * Copyright (c) 2023-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,9 +26,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.NavigationDrawerItemColors
 import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Text
@@ -123,23 +121,14 @@ internal fun ColumnScope.SheetContent(
 }
 
 @Composable
-private fun DrawerItem(
+internal expect fun DrawerItem(
   modifier: Modifier = Modifier,
   destination: DrawerItem,
   icon: ImageVector,
   selected: Boolean,
   onClick: () -> Unit,
   colors: NavigationDrawerItemColors,
-) {
-  NavigationDrawerItem(
-    modifier = modifier,
-    label = { Text(stringResource(destination.name)) },
-    icon = { Icon(icon, stringResource(destination.name)) },
-    selected = selected,
-    onClick = onClick,
-    colors = colors,
-  )
-}
+)
 
 private const val HELLO_DURATION_MS = 2_000L
 

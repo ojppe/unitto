@@ -16,8 +16,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import com.android.build.api.dsl.androidLibrary
-
 plugins { id("unitto.multiplatform.library") }
 
 kotlin.androidLibrary { namespace = "com.sadellie.unitto.core.licenses" }

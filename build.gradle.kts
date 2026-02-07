@@ -23,7 +23,6 @@ import io.gitlab.arturbosch.detekt.DetektCreateBaselineTask
 plugins {
   alias(libs.plugins.android.application) apply false
   alias(libs.plugins.android.library) apply false
-  alias(libs.plugins.kotlin.android) apply false
   alias(libs.plugins.multiplatform) apply false
   alias(libs.plugins.android.multiplatform.library) apply false
   alias(libs.plugins.ksp) apply false

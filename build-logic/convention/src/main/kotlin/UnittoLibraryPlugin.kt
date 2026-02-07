@@ -16,8 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryTarget
 import com.android.build.api.dsl.LibraryExtension
-import com.android.build.api.dsl.androidLibrary
 import kotlin.jvm.optionals.getOrNull
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
@@ -44,9 +44,8 @@ class UnittoMultiplatformLibraryPlugin : Plugin<Project> {
     with(target) {
       apply(plugin = libs.getPlugin("multiplatform"))
       apply(plugin = libs.getPlugin("android.multiplatform.library"))
-
       extensions.configure<KotlinMultiplatformExtension> {
-        androidLibrary {
+        configure<KotlinMultiplatformAndroidLibraryTarget> {
           compileSdk = 36
           minSdk = 23
           @OptIn(ExperimentalKotlinGradlePluginApi::class)
@@ -94,7 +93,6 @@ class UnittoMultiplatformLibraryPlugin : Plugin<Project> {
 class UnittoLibraryPlugin : Plugin<Project> {
   override fun apply(target: Project) {
     with(target) {
-      apply(plugin = libs.getPlugin("kotlin.android"))
       apply(plugin = libs.getPlugin("android.library"))
 
       extensions.configure<LibraryExtension> {
@@ -104,7 +102,6 @@ class UnittoLibraryPlugin : Plugin<Project> {
         buildFeatures {
           compose = false
           aidl = false
-          renderScript = false
           shaders = false
           buildConfig = false
           resValues = false

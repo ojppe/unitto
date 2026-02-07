@@ -18,7 +18,6 @@
 
 package com.sadellie.unitto.feature.settings.navigation
 
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
@@ -39,15 +38,8 @@ import com.sadellie.unitto.feature.settings.thirdparty.ThirdPartyLicensesScreen
 import com.sadellie.unitto.feature.settings.unitgroups.UnitGroupsRoute
 import io.github.sadellie.themmo.ThemmoController
 import kotlinx.serialization.Serializable
-import org.koin.compose.navigation3.EntryProviderInstaller
 import org.koin.core.annotation.KoinExperimentalAPI
-import org.koin.core.annotation.KoinInternalApi
-import org.koin.core.definition.KoinDefinition
-import org.koin.core.module.KoinDslMarker
 import org.koin.core.module.Module
-import org.koin.core.module._singleInstanceFactory
-import org.koin.core.qualifier.named
-import org.koin.core.scope.Scope
 import org.koin.dsl.navigation3.navigation
 
 fun NavBackStack<NavKey>.navigateToUnitGroups() = add(UnitGroupRoute)
@@ -169,24 +161,4 @@ internal data object ThirdPartyRoute : Route {
 @Serializable
 internal data object EasterEggRoute : Route {
   override val routeId = "easter_egg_route"
-}
-
-// remove after https://github.com/InsertKoinIO/koin/pull/2313
-@KoinExperimentalAPI
-@KoinDslMarker
-@OptIn(KoinInternalApi::class)
-internal inline fun <reified T : Any> Module.navigation(
-  metadata: Map<String, Any> = emptyMap(),
-  noinline definition: @Composable Scope.(T) -> Unit,
-): KoinDefinition<EntryProviderInstaller> {
-  val def =
-    _singleInstanceFactory<EntryProviderInstaller>(
-      named<T>(),
-      {
-        val scope = this
-        { entry<T>(content = { t -> definition(scope, t) }, metadata = metadata) }
-      },
-    )
-  indexPrimaryType(def)
-  return KoinDefinition(this, def)
 }

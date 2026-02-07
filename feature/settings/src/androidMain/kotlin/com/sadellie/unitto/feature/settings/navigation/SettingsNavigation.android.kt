@@ -25,6 +25,7 @@ import com.sadellie.unitto.feature.settings.backup.BackupRoute
 import com.sadellie.unitto.feature.settings.language.LanguageRoute
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.core.module.Module
+import org.koin.dsl.navigation3.navigation
 
 @OptIn(KoinExperimentalAPI::class)
 internal actual fun Module.backupNavigation() {

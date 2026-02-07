@@ -24,6 +24,7 @@ import com.sadellie.unitto.core.navigation.LocalNavigator
 import com.sadellie.unitto.core.ui.AndroidExclusiveScreenSecondary
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.core.module.Module
+import org.koin.dsl.navigation3.navigation
 
 @OptIn(KoinExperimentalAPI::class)
 internal actual fun Module.backupNavigation() {

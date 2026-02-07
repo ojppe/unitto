@@ -37,6 +37,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -113,7 +114,7 @@ internal fun UserTimeZone(
       enter = scaleIn() + fadeIn(),
       exit = scaleOut() + fadeOut(),
     ) {
-      IconButton(onResetClick) {
+      IconButton(onClick = onResetClick, shapes = IconButtonDefaults.shapes()) {
         Icon(
           imageVector = Symbols.History,
           contentDescription = stringResource(Res.string.time_zone_reset),

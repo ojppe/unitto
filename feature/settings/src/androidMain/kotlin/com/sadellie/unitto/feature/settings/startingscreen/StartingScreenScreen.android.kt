@@ -21,6 +21,7 @@ package com.sadellie.unitto.feature.settings.startingscreen
 import android.os.Build
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
@@ -35,7 +36,10 @@ internal actual fun AddShortcutButton(destination: DrawerItem) {
   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
     val coroutineScope = rememberCoroutineScope()
     val mContext = LocalContext.current
-    IconButton(onClick = { coroutineScope.launch { destination.addShortcut(mContext) } }) {
+    IconButton(
+      onClick = { coroutineScope.launch { destination.addShortcut(mContext) } },
+      shapes = IconButtonDefaults.shapes(),
+    ) {
       Icon(Symbols.AppShortcut, null)
     }
   }

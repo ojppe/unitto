@@ -40,6 +40,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
@@ -310,12 +311,14 @@ private fun TimeZoneDialog(
               updateLabel(dialogState.timeZone, tfv.text.toString())
             },
             content = { Text(text = stringResource(Res.string.common_ok)) },
+            shapes = ButtonDefaults.shapes(),
           )
         },
         dismissButton = {
           TextButton(
             onClick = { setDialogState(TimeZoneDialogState.Nothing) },
             content = { Text(text = stringResource(Res.string.common_cancel)) },
+            shapes = ButtonDefaults.shapes(),
           )
         },
         onDismissRequest = { setDialogState(TimeZoneDialogState.Nothing) },

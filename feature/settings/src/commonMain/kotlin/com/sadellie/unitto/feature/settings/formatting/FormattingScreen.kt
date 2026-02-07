@@ -38,6 +38,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.ToggleButton
+import androidx.compose.material3.ToggleButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -282,6 +283,7 @@ private fun FractionalSymbolSelector(
       checked = formatterSymbols.fractional == Token.PERIOD,
       onCheckedChange = { updateFormatterSymbols(Token.SPACE, Token.PERIOD) },
       modifier = Modifier.weight(1f),
+      shapes = ToggleButtonDefaults.shapes(),
     ) {
       Text(stringResource(Res.string.settings_period))
     }
@@ -289,6 +291,7 @@ private fun FractionalSymbolSelector(
       checked = formatterSymbols.fractional == Token.COMMA,
       onCheckedChange = { updateFormatterSymbols(Token.SPACE, Token.COMMA) },
       modifier = Modifier.weight(1f),
+      shapes = ToggleButtonDefaults.shapes(),
     ) {
       Text(stringResource(Res.string.common_comma))
     }
@@ -307,6 +310,7 @@ private fun GroupingSymbolSelector(
       checked = formatterSymbols.grouping == Token.SPACE,
       onCheckedChange = { updateFormatterSymbols(Token.SPACE, formatterSymbols.fractional) },
       modifier = Modifier.weight(1f),
+      shapes = ToggleButtonDefaults.shapes(),
     ) {
       Text(stringResource(Res.string.settings_space))
     }
@@ -314,6 +318,7 @@ private fun GroupingSymbolSelector(
       checked = formatterSymbols.grouping == Token.PERIOD,
       onCheckedChange = { updateFormatterSymbols(Token.PERIOD, Token.COMMA) },
       modifier = Modifier.weight(1f),
+      shapes = ToggleButtonDefaults.shapes(),
     ) {
       Text(stringResource(Res.string.settings_period))
     }
@@ -321,6 +326,7 @@ private fun GroupingSymbolSelector(
       checked = formatterSymbols.grouping == Token.COMMA,
       onCheckedChange = { updateFormatterSymbols(Token.COMMA, Token.PERIOD) },
       modifier = Modifier.weight(1f),
+      shapes = ToggleButtonDefaults.shapes(),
     ) {
       Text(stringResource(Res.string.common_comma))
     }
@@ -339,6 +345,7 @@ private fun OutputFormatSelector(
       onCheckedChange = { onOutputFormatChange(OutputFormat.ALLOW_ENGINEERING) },
       checked = OutputFormat.ALLOW_ENGINEERING == outputFormat,
       modifier = Modifier.weight(1f),
+      shapes = ToggleButtonDefaults.shapes(),
     ) {
       Text(stringResource(Res.string.settings_auto))
     }
@@ -346,6 +353,7 @@ private fun OutputFormatSelector(
       onCheckedChange = { onOutputFormatChange(OutputFormat.FORCE_ENGINEERING) },
       checked = OutputFormat.FORCE_ENGINEERING == outputFormat,
       modifier = Modifier.weight(1f),
+      shapes = ToggleButtonDefaults.shapes(),
     ) {
       Text(stringResource(Res.string.common_enabled))
     }
@@ -353,6 +361,7 @@ private fun OutputFormatSelector(
       onCheckedChange = { onOutputFormatChange(OutputFormat.PLAIN) },
       checked = OutputFormat.PLAIN == outputFormat,
       modifier = Modifier.weight(1f),
+      shapes = ToggleButtonDefaults.shapes(),
     ) {
       Text(stringResource(Res.string.common_disabled))
     }

@@ -30,6 +30,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -41,8 +42,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.stateIn
-import com.sadellie.unitto.core.data.converter.UnitsRepository
 import com.sadellie.unitto.core.data.converter.UnitID
+import com.sadellie.unitto.core.data.converter.UnitsRepository
 import com.sadellie.unitto.core.database.ConverterWidgetUnitPairDao
 import com.sadellie.unitto.core.database.ConverterWidgetUnitPairEntity
 import com.sadellie.unitto.core.designsystem.icons.symbols.Add
@@ -117,7 +118,7 @@ private fun MainScreen(
     title = { Text(stringResource(Res.string.converter_widget_configure_select_pairs)) },
     navigationIcon = {},
     actions = {
-      IconButton(onDone, enabled = enableSubmitButton) {
+      IconButton(onDone, enabled = enableSubmitButton, shapes = IconButtonDefaults.shapes()) {
         Icon(Symbols.Check, stringResource(Res.string.common_confirm))
       }
     },
@@ -159,7 +160,11 @@ private fun MainScreen(
             }
           },
           trailingContent = {
-            IconButton(onClick = { onRemove(index) }, enabled = isNotSubmitting) {
+            IconButton(
+              onClick = { onRemove(index) },
+              enabled = isNotSubmitting,
+              shapes = IconButtonDefaults.shapes(),
+            ) {
               Icon(
                 imageVector = Symbols.Close,
                 contentDescription = stringResource(Res.string.common_delete),

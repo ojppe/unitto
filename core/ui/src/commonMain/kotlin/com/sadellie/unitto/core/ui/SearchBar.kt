@@ -38,6 +38,7 @@ import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.clearText
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -63,13 +64,13 @@ import com.sadellie.unitto.core.designsystem.icons.symbols.ArrowBack
 import com.sadellie.unitto.core.designsystem.icons.symbols.Close
 import com.sadellie.unitto.core.designsystem.icons.symbols.Search
 import com.sadellie.unitto.core.designsystem.icons.symbols.Symbols
+import kotlin.math.roundToInt
 import org.jetbrains.compose.resources.stringResource
 import unitto.core.common.generated.resources.Res
 import unitto.core.common.generated.resources.common_clear_input_description
 import unitto.core.common.generated.resources.common_navigate_up_description
 import unitto.core.common.generated.resources.common_search_button_description
 import unitto.core.common.generated.resources.common_search_text_field_placeholder
-import kotlin.math.roundToInt
 
 @Composable
 fun SearchBar(
@@ -169,7 +170,7 @@ private fun SearchTextField(
 
 @Composable
 private fun SearchButton(onClick: () -> Unit) {
-  IconButton(onClick) {
+  IconButton(onClick = onClick, shapes = IconButtonDefaults.shapes()) {
     Icon(
       imageVector = Symbols.Search,
       contentDescription = stringResource(Res.string.common_search_button_description),
@@ -179,7 +180,7 @@ private fun SearchButton(onClick: () -> Unit) {
 
 @Composable
 private fun NavigateButton(onClick: () -> Unit) {
-  IconButton(onClick) {
+  IconButton(onClick = onClick, shapes = IconButtonDefaults.shapes()) {
     Icon(
       imageVector = Symbols.ArrowBack,
       contentDescription = stringResource(Res.string.common_navigate_up_description),
@@ -190,7 +191,7 @@ private fun NavigateButton(onClick: () -> Unit) {
 @Composable
 private fun ClearButton(visible: Boolean, onClick: () -> Unit) {
   AnimatedVisibility(visible = visible, enter = fadeIn(), exit = fadeOut()) {
-    IconButton(onClick) {
+    IconButton(onClick = onClick, shapes = IconButtonDefaults.shapes()) {
       Icon(
         imageVector = Symbols.Close,
         contentDescription = stringResource(Res.string.common_clear_input_description),

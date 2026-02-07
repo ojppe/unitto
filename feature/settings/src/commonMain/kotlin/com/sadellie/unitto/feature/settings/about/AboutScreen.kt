@@ -24,6 +24,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -148,7 +149,9 @@ private fun AboutScreen(
       title = { Text(stringResource(Res.string.settings_note)) },
       text = { Text(stringResource(Res.string.settings_currency_rates_note_text)) },
       confirmButton = {
-        TextButton(onClick = { showDialog = false }) { Text(stringResource(Res.string.common_ok)) }
+        TextButton(onClick = { showDialog = false }, shapes = ButtonDefaults.shapes()) {
+          Text(stringResource(Res.string.common_ok))
+        }
       },
       onDismissRequest = { showDialog = false },
     )

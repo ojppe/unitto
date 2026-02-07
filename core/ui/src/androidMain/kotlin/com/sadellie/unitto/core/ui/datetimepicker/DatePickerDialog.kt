@@ -18,6 +18,7 @@
 
 package com.sadellie.unitto.core.ui.datetimepicker
 
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.Text
@@ -65,12 +66,15 @@ fun DatePickerDialog(
               .withMonth(date.monthValue)
               .withDayOfMonth(date.dayOfMonth)
           )
-        }
+        },
+        shapes = ButtonDefaults.shapes(),
       ) {
         Text(confirmLabel)
       }
     },
-    dismissButton = { TextButton(onDismiss) { Text(dismissLabel) } },
+    dismissButton = {
+      TextButton(onClick = onDismiss, shapes = ButtonDefaults.shapes()) { Text(dismissLabel) }
+    },
     content = { DatePicker(pickerState) },
   )
 }

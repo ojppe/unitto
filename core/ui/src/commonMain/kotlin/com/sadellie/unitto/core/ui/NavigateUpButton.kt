@@ -42,9 +42,10 @@ fun NavigateUpButton(onClick: () -> Unit) {
   IconButton(
     onClick = onClick,
     shapes = IconButtonDefaults.shapes(),
-    Modifier.size(
-      IconButtonDefaults.smallContainerSize(IconButtonDefaults.IconButtonWidthOption.Uniform)
-    ),
+    modifier =
+      Modifier.size(
+        IconButtonDefaults.smallContainerSize(IconButtonDefaults.IconButtonWidthOption.Uniform)
+      ),
   ) {
     Icon(
       imageVector = Symbols.ArrowBack,

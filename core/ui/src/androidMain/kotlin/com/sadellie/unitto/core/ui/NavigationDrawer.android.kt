@@ -26,6 +26,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -68,8 +69,15 @@ private fun PreviewUnittoModalNavigationDrawer() {
     content = {
       Column {
         Text(text = "Clicked: $clicked")
-        Button(onClick = { corScope.launch { drawerState.open() } }) { Text(text = "Open drawer") }
-        Button(onClick = { clicked += 1 }) { Text(text = "Click") }
+        Button(
+          onClick = { corScope.launch { drawerState.open() } },
+          shapes = ButtonDefaults.shapes(),
+        ) {
+          Text(text = "Open drawer")
+        }
+        Button(onClick = { clicked += 1 }, shapes = ButtonDefaults.shapes()) {
+          Text(text = "Click")
+        }
       }
     },
   )

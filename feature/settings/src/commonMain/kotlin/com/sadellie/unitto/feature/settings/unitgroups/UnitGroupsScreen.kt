@@ -37,8 +37,10 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -137,7 +139,11 @@ private fun UnitGroupsScreen(
         enter = fadeIn() + expandHorizontally(),
         exit = fadeOut() + shrinkHorizontally(),
       ) {
-        IconButton(onClick = undoAutoSortUnitGroups, enabled = !uiState.isAutoSortEnabled) {
+        IconButton(
+          onClick = undoAutoSortUnitGroups,
+          enabled = !uiState.isAutoSortEnabled,
+          shapes = IconButtonDefaults.shapes(),
+        ) {
           Icon(Symbols.Undo, stringResource(Res.string.settings_unit_groups_undo))
         }
       }
@@ -145,6 +151,7 @@ private fun UnitGroupsScreen(
       IconButton(
         onClick = { updateAutoSortDialogState(AutoSortDialogState.SHOW) },
         enabled = uiState.isAutoSortEnabled,
+        shapes = IconButtonDefaults.shapes(),
       ) {
         Icon(Symbols.SwapVert, stringResource(Res.string.settings_unit_groups_auto_sort))
       }
@@ -226,7 +233,11 @@ private fun UnitGroupsScreen(
       icon = { Icon(Symbols.SwapVert, stringResource(Res.string.settings_unit_groups_auto_sort)) },
       onDismissRequest = { updateAutoSortDialogState(AutoSortDialogState.NONE) },
       confirmButton = {
-        TextButton(onClick = autoSortUnitGroups, enabled = !isSorting) {
+        TextButton(
+          onClick = autoSortUnitGroups,
+          enabled = !isSorting,
+          shapes = ButtonDefaults.shapes(),
+        ) {
           Text(stringResource(Res.string.common_confirm))
         }
       },
@@ -234,6 +245,7 @@ private fun UnitGroupsScreen(
         TextButton(
           onClick = { updateAutoSortDialogState(AutoSortDialogState.NONE) },
           enabled = !isSorting,
+          shapes = ButtonDefaults.shapes(),
         ) {
           Text(stringResource(Res.string.common_cancel))
         }

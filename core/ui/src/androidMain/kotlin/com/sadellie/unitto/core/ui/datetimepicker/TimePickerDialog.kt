@@ -32,8 +32,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.BasicAlertDialog
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -114,6 +116,7 @@ fun TimePickerDialog(
                 .align(Alignment.BottomStart)
                 .zIndex(TOGGLE_BUTTON_Z_INDEX),
             onClick = { showingPicker = !showingPicker },
+            shapes = IconButtonDefaults.shapes(),
           ) {
             val icon =
               if (showingPicker) {
@@ -144,8 +147,13 @@ fun TimePickerDialog(
         }
         Row(modifier = Modifier.height(40.dp).fillMaxWidth()) {
           Spacer(modifier = Modifier.weight(1f))
-          TextButton(onClick = onCancel) { Text(stringResource(Res.string.common_cancel)) }
-          TextButton(onClick = { onConfirm(pickerState.hour, pickerState.minute) }) {
+          TextButton(onClick = onCancel, shapes = ButtonDefaults.shapes()) {
+            Text(stringResource(Res.string.common_cancel))
+          }
+          TextButton(
+            onClick = { onConfirm(pickerState.hour, pickerState.minute) },
+            shapes = ButtonDefaults.shapes(),
+          ) {
             Text(confirmLabel)
           }
         }

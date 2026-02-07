@@ -29,6 +29,7 @@ import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.clearText
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -56,7 +57,9 @@ fun OutlinedDecimalTextField(
     state = state,
     trailingIcon = {
       AnimatedVisibility(state.text.isNotBlank(), enter = scaleIn(), exit = scaleOut()) {
-        IconButton(state::clearText) { Icon(Symbols.Close, null) }
+        IconButton(onClick = state::clearText, shapes = IconButtonDefaults.shapes()) {
+          Icon(Symbols.Close, null)
+        }
       }
     },
     label = { label() },

@@ -25,6 +25,7 @@ import androidx.compose.animation.scaleOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import com.sadellie.unitto.core.designsystem.icons.symbols.Favorite
@@ -36,7 +37,7 @@ import unitto.core.common.generated.resources.converter_favorite_button_descript
 
 @Composable
 internal fun FavoritesButton(state: Boolean, onClick: () -> Unit) {
-  IconButton(onClick = onClick) {
+  IconButton(onClick = onClick, shapes = IconButtonDefaults.shapes()) {
     val animationSpec = MaterialTheme.motionScheme.defaultEffectsSpec<Float>()
     AnimatedContent(
       targetState = state,

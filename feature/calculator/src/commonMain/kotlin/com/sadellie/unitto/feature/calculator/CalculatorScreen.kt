@@ -45,6 +45,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
@@ -497,10 +498,14 @@ private fun ClearHistoryDialog(onConfirm: () -> Unit, onDismiss: () -> Unit) {
     title = { Text(stringResource(Res.string.calculator_clear_history)) },
     text = { Text(stringResource(Res.string.calculator_clear_history_support)) },
     confirmButton = {
-      TextButton(onClick = onConfirm) { Text(stringResource(Res.string.common_clear)) }
+      TextButton(onClick = onConfirm, shapes = ButtonDefaults.shapes()) {
+        Text(stringResource(Res.string.common_clear))
+      }
     },
     dismissButton = {
-      TextButton(onClick = onDismiss) { Text(stringResource(Res.string.common_cancel)) }
+      TextButton(onClick = onDismiss, shapes = ButtonDefaults.shapes()) {
+        Text(stringResource(Res.string.common_cancel))
+      }
     },
     onDismissRequest = onDismiss,
   )
@@ -586,7 +591,7 @@ private fun ClearHistoryButton(onClick: () -> Unit, isOpen: Boolean) {
 
 @Composable
 private fun OpenHistoryViewButton(onClick: () -> Unit, isOpen: Boolean) {
-  IconButton(onClick = onClick) {
+  IconButton(onClick = onClick, shapes = IconButtonDefaults.shapes()) {
     val rotation =
       animateFloatAsState(
         targetValue = if (isOpen) 360f else 0f,

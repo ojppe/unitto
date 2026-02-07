@@ -36,10 +36,10 @@ fun ExperimentalBar(modifier: Modifier) {
   val linkOpener = rememberLinkOpener()
   ListItemExpressive(
     modifier = modifier,
-    headlineContent = { Text(text = "EXPERIMENTAL") },
+    headlineContent = { Text(text = "Alpha") },
     onClick = null,
     supportingContent = {
-      Text(text = "This is an experimental build of Unitto. Expect the unexpected (bugs)")
+      Text(text = "Web version of Unitto is currently in Alpha. Expect the unexpected (bugs)")
     },
     trailingContent = {
       Button(

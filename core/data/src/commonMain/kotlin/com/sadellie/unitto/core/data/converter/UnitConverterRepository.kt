@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2024-2025 Elshan Agaev
+ * Copyright (c) 2024-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 
 interface UnitConverterRepository {
   val currencyRateUpdateState: MutableStateFlow<CurrencyRateUpdateState>
+
+  fun updateApiUrl(newApiUrl: String)
 
   suspend fun getById(id: String): BasicUnit
 

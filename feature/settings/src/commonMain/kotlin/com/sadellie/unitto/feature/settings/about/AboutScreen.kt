@@ -91,12 +91,12 @@ import unitto.core.common.generated.resources.settings_view_source_code
 internal fun AboutRoute(
   navigateUpAction: () -> Unit,
   navigateToThirdParty: () -> Unit,
-  navigateToEasterEgg: () -> Unit,
+  navigateToAdvanced: () -> Unit,
 ) {
   AboutScreen(
     navigateUpAction = navigateUpAction,
     navigateToThirdParty = navigateToThirdParty,
-    navigateToEasterEgg = navigateToEasterEgg,
+    navigateToAdvanced = navigateToAdvanced,
   )
 }
 
@@ -104,9 +104,8 @@ internal fun AboutRoute(
 private fun AboutScreen(
   navigateUpAction: () -> Unit,
   navigateToThirdParty: () -> Unit,
-  navigateToEasterEgg: () -> Unit,
+  navigateToAdvanced: () -> Unit,
 ) {
-  var aboutItemClick: Int by rememberSaveable { mutableIntStateOf(0) }
   var showDialog: Boolean by rememberSaveable { mutableStateOf(false) }
 
   ScaffoldWithLargeTopBar(
@@ -156,16 +155,17 @@ private fun AboutScreen(
         onClick = { navigateToThirdParty() },
         shape = ListItemExpressiveDefaults.middleShape,
       )
+      var aboutItemClick: Int by rememberSaveable { mutableIntStateOf(0) }
       ListItemExpressive(
         icon = Symbols.Info,
         headlineText = stringResource(Res.string.settings_version_name),
         supportingText = "${Config.VERSION_NAME} (${Config.VERSION_CODE})",
         onClick = {
-          val clicksToOpenEasterEgg = 5
+          val clicksToOpenAdvanced = 7
           aboutItemClick++
-          if (aboutItemClick > clicksToOpenEasterEgg) {
+          if (aboutItemClick > clicksToOpenAdvanced) {
             aboutItemClick = 0
-            navigateToEasterEgg()
+            navigateToAdvanced()
           }
         },
         shape = ListItemExpressiveDefaults.lastShape,
@@ -257,5 +257,5 @@ private fun AuthorBlock(onClick: () -> Unit, modifier: Modifier) {
 @Preview
 @Composable
 private fun PreviewAboutScreen() {
-  AboutScreen(navigateUpAction = {}, navigateToThirdParty = {}, navigateToEasterEgg = {})
+  AboutScreen(navigateUpAction = {}, navigateToThirdParty = {}, navigateToAdvanced = {})
 }

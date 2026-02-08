@@ -20,7 +20,24 @@ Not used explicitly. Added automatically by Widget feature.
 ### android.permission.FOREGROUND_SERVICE
 Not used explicitly. Added automatically by Widget feature.
 
-## Network service (not FOSS)
+## Network service
 
-The app uses [Free Currency Exchange Rates API](https://github.com/fawazahmed0/exchange-api) by [fawazahmed0](https://github.com/fawazahmed0).
+By default the app uses [Free Currency Exchange Rates API](https://github.com/fawazahmed0/exchange-api) by [fawazahmed0](https://github.com/fawazahmed0).
 Requests are send to `cdn.jsdelivr.net`.
+
+### Alternative service
+
+You can run your own service that relies on [lineofflight/frankfurter](github.com/lineofflight/frankfurter). Both services can be self-hosted: this and `frankfurter` (by default a public instance of `frankfurter` is used)
+
+1. Navigate to [alternative](./alternative)
+2. Install packages from `requirements.txt`
+3. Edit parameters if necessary (top of the script)
+    1. Address
+    2. Port
+    3. frankfurter API address
+4. Run `python exchange.rates.py`
+5. Open **Unitto**
+6. Navigate to **Settings** and select **About Unitto**
+7. Tap **Version name** 7 times to open **Advanced** settings
+8. Select **Currency exchange rates API** and provide your alternative service address
+9. Save and restart the app

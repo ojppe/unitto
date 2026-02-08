@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2025 Elshan Agaev
+ * Copyright (c) 2025-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
 
 package com.sadellie.unitto.feature.settings
 
+import com.sadellie.unitto.feature.settings.advanced.AdvancedSettingsViewModel
 import com.sadellie.unitto.feature.settings.calculator.CalculatorSettingsViewModel
 import com.sadellie.unitto.feature.settings.converter.ConverterSettingsViewModel
 import com.sadellie.unitto.feature.settings.display.DisplayViewModel
@@ -36,5 +37,6 @@ val settingsModule = module {
   viewModelOf(::FormattingViewModel)
   viewModelOf(::StartingScreenViewModel)
   viewModelOf(::UnitGroupsViewModel)
+  viewModelOf(::AdvancedSettingsViewModel)
   viewModelOf(::SettingsViewModel)
 }

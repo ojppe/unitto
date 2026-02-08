@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2025 Elshan Agaev
+ * Copyright (c) 2023-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -131,6 +131,9 @@ interface UserPreferencesRepository {
 
     val inverseMode: Boolean
       get() = false
+
+    val customApiUrl: String
+      get() = ""
   }
 
   suspend fun updateDigitsPrecision(precision: Int)
@@ -192,6 +195,8 @@ interface UserPreferencesRepository {
   suspend fun updateAdditionalButtons(enabled: Boolean)
 
   suspend fun updateInverseMode(enabled: Boolean)
+
+  suspend fun updateCustomApiUrl(apiUrl: String)
 }
 
 internal inline fun <T, R> T.letTryOrNull(block: (T) -> R): R? =

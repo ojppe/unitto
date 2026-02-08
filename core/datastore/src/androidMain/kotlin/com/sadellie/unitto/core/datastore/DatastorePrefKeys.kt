@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2025 Elshan Agaev
+ * Copyright (c) 2023-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,9 +50,11 @@ object DatastorePrefKeys {
   // CALCULATOR
   val RADIAN_MODE = booleanPreferencesKey(PrefKeys.RADIAN_MODE_PREF_KEY)
   val PARTIAL_HISTORY_VIEW = booleanPreferencesKey(PrefKeys.PARTIAL_HISTORY_VIEW_PREF_KEY)
-  val STEPPED_PARTIAL_HISTORY_VIEW = booleanPreferencesKey(PrefKeys.STEPPED_PARTIAL_HISTORY_VIEW_PREF_KEY)
+  val STEPPED_PARTIAL_HISTORY_VIEW =
+    booleanPreferencesKey(PrefKeys.STEPPED_PARTIAL_HISTORY_VIEW_PREF_KEY)
   val OPEN_HISTORY_VIEW_BUTTON = booleanPreferencesKey(PrefKeys.OPEN_HISTORY_VIEW_BUTTON_PREF_KEY)
-  val INITIAL_PARTIAL_HISTORY_VIEW = booleanPreferencesKey(PrefKeys.INITIAL_PARTIAL_HISTORY_VIEW_PREF_KEY)
+  val INITIAL_PARTIAL_HISTORY_VIEW =
+    booleanPreferencesKey(PrefKeys.INITIAL_PARTIAL_HISTORY_VIEW_PREF_KEY)
   val FRACTIONAL_OUTPUT = booleanPreferencesKey(PrefKeys.FRACTIONAL_OUTPUT_PREF_KEY)
   val ADDITIONAL_BUTTONS = booleanPreferencesKey(PrefKeys.ADDITIONAL_BUTTONS_PREF_KEY)
   val INVERSE_MODE = booleanPreferencesKey(PrefKeys.INVERSE_MODE_PREF_KEY)
@@ -63,6 +65,9 @@ object DatastorePrefKeys {
   val SHOWN_UNIT_GROUPS = stringPreferencesKey(PrefKeys.SHOWN_UNIT_GROUPS_PREF_KEY)
   val UNIT_CONVERTER_FAVORITES_ONLY =
     booleanPreferencesKey(PrefKeys.UNIT_CONVERTER_FAVORITES_ONLY_PREF_KEY)
-  val UNIT_CONVERTER_FORMAT_TIME = booleanPreferencesKey(PrefKeys.UNIT_CONVERTER_FORMAT_TIME_PREF_KEY)
+  val UNIT_CONVERTER_FORMAT_TIME =
+    booleanPreferencesKey(PrefKeys.UNIT_CONVERTER_FORMAT_TIME_PREF_KEY)
   val UNIT_CONVERTER_SORTING = stringPreferencesKey(PrefKeys.UNIT_CONVERTER_SORTING_PREF_KEY)
+  val UNIT_CONVERTER_CUSTOM_API_URL =
+    stringPreferencesKey(PrefKeys.UNIT_CONVERTER_CUSTOM_API_URL_PREF_KEY)
 }

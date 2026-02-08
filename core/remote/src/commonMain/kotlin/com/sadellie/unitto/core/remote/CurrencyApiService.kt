@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2022-2025 Elshan Agaev
+ * Copyright (c) 2022-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,14 +26,20 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.JsonElement
 
 interface CurrencyApiService {
+  var apiUrl: String
+
   suspend fun getCurrencyPairs(baseCurrency: String): CurrencyApiResponse
 }
 
-internal class CurrencyApiServiceImpl : CurrencyApiService {
+class CurrencyApiServiceImpl : CurrencyApiService {
   private val client by lazy { HttpClient { install(ContentNegotiation) { json() } } }
+  override var apiUrl: String = ""
+    set(value) {
+      field = value.ifBlank { BASE_URL }
+    }
 
   override suspend fun getCurrencyPairs(baseCurrency: String): CurrencyApiResponse {
-    val response = client.get("$BASE_URL/${baseCurrency}.json").body<JsonElement>()
+    val response = client.get("$apiUrl/${baseCurrency}.json").body<JsonElement>()
     val currencyApiResponse = CurrencyApiResponse.fromJsonElement(response, baseCurrency)
     return currencyApiResponse
   }

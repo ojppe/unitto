@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2022-2025 Elshan Agaev
+ * Copyright (c) 2022-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -216,11 +216,12 @@ internal class ConverterViewModel(
 
   private fun loadInitialUnits() =
     viewModelScope.launch {
+      val prefs = userPrefsRepository.converterPrefs.first()
+      unitsRepo.updateApiUrl(prefs.customApiUrl)
       if (canUseUnitIdsFromArgs()) {
         _unitFromId.update { args.unitFromId }
         _unitToId.update { args.unitToId }
       } else {
-        val prefs = userPrefsRepository.converterPrefs.first()
         _unitFromId.update { prefs.latestLeftSideUnit }
         _unitToId.update { prefs.latestRightSideUnit }
       }

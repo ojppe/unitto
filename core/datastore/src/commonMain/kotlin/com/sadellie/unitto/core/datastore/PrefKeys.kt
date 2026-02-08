@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2025 Elshan Agaev
+ * Copyright (c) 2025-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -52,4 +52,5 @@ object PrefKeys {
   const val UNIT_CONVERTER_FAVORITES_ONLY_PREF_KEY = "UNIT_CONVERTER_FAVORITES_ONLY_PREF_KEY"
   const val UNIT_CONVERTER_FORMAT_TIME_PREF_KEY = "UNIT_CONVERTER_FORMAT_TIME_PREF_KEY"
   const val UNIT_CONVERTER_SORTING_PREF_KEY = "UNIT_CONVERTER_SORTING_PREF_KEY"
+  const val UNIT_CONVERTER_CUSTOM_API_URL_PREF_KEY = "UNIT_CONVERTER_CUSTOM_API_URL_PREF_KEY"
 }

@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2022-2025 Elshan Agaev
+ * Copyright (c) 2022-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,6 +50,10 @@ class UnitConverterRepositoryImpl(
 
   override val currencyRateUpdateState =
     MutableStateFlow<CurrencyRateUpdateState>(CurrencyRateUpdateState.Nothing)
+
+  override fun updateApiUrl(newApiUrl: String) {
+    currencyApiService.apiUrl = newApiUrl
+  }
 
   override suspend fun getById(id: String): BasicUnit = unitsRepo.getById(id)
 
@@ -467,6 +471,7 @@ class UnitConverterRepositoryImpl(
       val latestRate = currencyRatesDao.getLatestRate(unitFrom.id, unitTo.id)
       val pairUnitValue = latestRate?.pairUnitValue
       if (pairUnitValue == null) {
+        // rate for given pair is not found in cached response
         currencyRateUpdateState.update { CurrencyRateUpdateState.Error }
         return@withContext ConverterResult.Error.CurrencyError
       }

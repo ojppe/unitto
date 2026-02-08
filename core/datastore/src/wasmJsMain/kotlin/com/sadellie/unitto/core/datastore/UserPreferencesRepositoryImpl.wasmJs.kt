@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2025 Elshan Agaev
+ * Copyright (c) 2025-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -90,6 +90,7 @@ class UserPreferencesRepositoryImpl : UserPreferencesRepository {
         latestLeftSideUnit = preferences.getLatestLeftSide(),
         latestRightSideUnit = preferences.getLatestRightSide(),
         acButton = preferences.getAcButton(),
+        customApiUrl = preferences.getCustomApiUrl(),
       )
     }
 
@@ -240,6 +241,10 @@ class UserPreferencesRepositoryImpl : UserPreferencesRepository {
   override suspend fun updateInverseMode(enabled: Boolean) =
     updateData(PrefKeys.INVERSE_MODE_PREF_KEY, enabled)
 
+  override suspend fun updateCustomApiUrl(apiUrl: String) {
+    updateData(PrefKeys.UNIT_CONVERTER_CUSTOM_API_URL_PREF_KEY, apiUrl)
+  }
+
   private fun Preferences.getEnableDynamicTheme() =
     this.getTyped<Boolean>(PrefKeys.ENABLE_DYNAMIC_THEME_PREF_KEY) ?: Defaults.enableDynamicTheme
 
@@ -348,6 +353,9 @@ class UserPreferencesRepositoryImpl : UserPreferencesRepository {
 
   private fun Preferences.getInverseMode() =
     this.getTyped<Boolean>(PrefKeys.INVERSE_MODE_PREF_KEY) ?: Defaults.inverseMode
+
+  private fun Preferences.getCustomApiUrl() =
+    this.getTyped<String>(PrefKeys.UNIT_CONVERTER_CUSTOM_API_URL_PREF_KEY) ?: Defaults.customApiUrl
 
   private inline fun <reified T> Preferences.getTyped(key: String) = this[key] as? T
 

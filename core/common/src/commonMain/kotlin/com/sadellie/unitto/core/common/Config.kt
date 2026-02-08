@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2025 Elshan Agaev
+ * Copyright (c) 2025-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@ package com.sadellie.unitto.core.common
 object Config {
   const val STORE_LINK = "https://play.google.com/store/apps/details?id=com.sadellie.unitto"
   const val TRANSLATE_LINK = "https://github.com/sadellie/unitto"
+  const val WEB_LINK = "https://sadellie.github.io/unitto/app/"
   val VERSION_CODE
     get() = BuildKonfig.VERSION_CODE
 

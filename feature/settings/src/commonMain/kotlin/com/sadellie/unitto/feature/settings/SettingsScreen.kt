@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2022-2025 Elshan Agaev
+ * Copyright (c) 2022-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,6 +44,7 @@ import com.sadellie.unitto.core.designsystem.LocalWindowSize
 import com.sadellie.unitto.core.designsystem.icons.symbols.BacklightHigh
 import com.sadellie.unitto.core.designsystem.icons.symbols.Cached
 import com.sadellie.unitto.core.designsystem.icons.symbols.Calculate
+import com.sadellie.unitto.core.designsystem.icons.symbols.DevicesOther
 import com.sadellie.unitto.core.designsystem.icons.symbols.Home
 import com.sadellie.unitto.core.designsystem.icons.symbols.Info
 import com.sadellie.unitto.core.designsystem.icons.symbols.NewReleases
@@ -98,6 +99,8 @@ import unitto.core.common.generated.resources.settings_rate_this_app
 import unitto.core.common.generated.resources.settings_starting_screen
 import unitto.core.common.generated.resources.settings_starting_screen_support
 import unitto.core.common.generated.resources.settings_title
+import unitto.core.common.generated.resources.settings_unitto_anywhere
+import unitto.core.common.generated.resources.settings_unitto_anywhere_support
 import unitto.core.common.generated.resources.settings_updated
 import unitto.core.common.generated.resources.settings_updated_support
 import unitto.core.common.generated.resources.settings_vibrations
@@ -254,6 +257,13 @@ private fun SettingsScreen(
         icon = Symbols.RateReview,
         headlineText = stringResource(Res.string.settings_rate_this_app),
         onClick = { linkOpener.launch(Config.STORE_LINK) },
+        shape = ListItemExpressiveDefaults.middleShape,
+      )
+      ListItemExpressive(
+        icon = Symbols.DevicesOther,
+        headlineText = stringResource(Res.string.settings_unitto_anywhere),
+        supportingText = stringResource(Res.string.settings_unitto_anywhere_support),
+        onClick = { linkOpener.launch(Config.WEB_LINK) },
         shape = ListItemExpressiveDefaults.middleShape,
       )
       ListItemExpressive(

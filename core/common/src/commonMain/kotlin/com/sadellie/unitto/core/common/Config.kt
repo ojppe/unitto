@@ -25,6 +25,7 @@ object Config {
   const val TERMS_LINK = "https://sadellie.github.io/unitto/terms"
   const val PRIVACY_LINK = "https://sadellie.github.io/unitto/privacy"
   const val SOURCE_CODE_LINK = "https://github.com/sadellie/unitto"
+  const val AUTHOR_LINK = "https://sadellie.github.io"
   val VERSION_CODE
     get() = BuildKonfig.VERSION_CODE
 

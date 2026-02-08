@@ -18,23 +18,47 @@
 
 package com.sadellie.unitto.feature.settings.about
 
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialShapes
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.toShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.sadellie.unitto.core.common.Config
 import com.sadellie.unitto.core.designsystem.icons.symbols.Code
 import com.sadellie.unitto.core.designsystem.icons.symbols.Copyright
@@ -53,6 +77,7 @@ import org.jetbrains.compose.resources.stringResource
 import unitto.core.common.generated.resources.Res
 import unitto.core.common.generated.resources.common_ok
 import unitto.core.common.generated.resources.settings_about_unitto
+import unitto.core.common.generated.resources.settings_author
 import unitto.core.common.generated.resources.settings_currency_rates_note_text
 import unitto.core.common.generated.resources.settings_currency_rates_note_title
 import unitto.core.common.generated.resources.settings_note
@@ -97,6 +122,10 @@ private fun AboutScreen(
       verticalArrangement = ListItemExpressiveDefaults.ListArrangement,
     ) {
       val linkOpener = rememberLinkOpener()
+      AuthorBlock(
+        modifier = Modifier.fillMaxWidth().padding(bottom = 4.dp),
+        onClick = { linkOpener.launch(Config.AUTHOR_LINK) },
+      )
       ListItemExpressive(
         icon = Symbols.Help,
         onClick = { showDialog = true },
@@ -158,8 +187,75 @@ private fun AboutScreen(
   }
 }
 
+@Composable
+private fun AuthorBlock(onClick: () -> Unit, modifier: Modifier) {
+  Row(
+    modifier =
+      modifier
+        .clip(ListItemExpressiveDefaults.singleShape)
+        .clickable(onClick = onClick)
+        .background(MaterialTheme.colorScheme.tertiaryContainer)
+        .padding(start = 16.dp, top = 8.dp, bottom = 8.dp, end = 8.dp),
+    horizontalArrangement = Arrangement.spacedBy(16.dp),
+    verticalAlignment = Alignment.CenterVertically,
+  ) {
+    Column(modifier = Modifier.weight(1f)) {
+      Text(
+        text = stringResource(Res.string.settings_author),
+        style = ListItemExpressiveDefaults.headlineTextStyle,
+        color = MaterialTheme.colorScheme.onTertiaryContainer,
+      )
+      Text(
+        text = "@sadellie",
+        style = ListItemExpressiveDefaults.supportingTextStyle,
+        color = MaterialTheme.colorScheme.onTertiaryContainer,
+      )
+    }
+
+    val infiniteTransition = rememberInfiniteTransition()
+    val rotation =
+      infiniteTransition.animateFloat(
+        initialValue = 0f,
+        targetValue = 360f,
+        animationSpec = infiniteRepeatable(tween(10_000), RepeatMode.Reverse),
+      )
+    Box(
+      modifier =
+        Modifier.clip(RoundedCornerShape(8.dp))
+          .background(MaterialTheme.colorScheme.tertiaryFixedDim),
+      contentAlignment = Alignment.Center,
+    ) {
+      val backgroundShape = remember {
+        listOf(
+            MaterialShapes.Slanted,
+            MaterialShapes.Cookie4Sided,
+            MaterialShapes.Pill,
+            MaterialShapes.Ghostish,
+            MaterialShapes.Gem,
+            MaterialShapes.Arch,
+          )
+          .random()
+      }
+      Box(
+        modifier =
+          Modifier.rotate(rotation.value)
+            .padding(8.dp)
+            .clip(backgroundShape.toShape())
+            .background(Brush.verticalGradient(listOf(Color(0xFF3E0077), Color(0xFF2B002B))))
+            .size(36.dp)
+      )
+      Box(
+        modifier =
+          Modifier.clip(CircleShape)
+            .background(Brush.verticalGradient(listOf(Color(0xFFD329D1), Color(0xFF30003C))))
+            .size(18.dp)
+      )
+    }
+  }
+}
+
 @Preview
 @Composable
-fun PreviewAboutScreen() {
+private fun PreviewAboutScreen() {
   AboutScreen(navigateUpAction = {}, navigateToThirdParty = {}, navigateToEasterEgg = {})
 }

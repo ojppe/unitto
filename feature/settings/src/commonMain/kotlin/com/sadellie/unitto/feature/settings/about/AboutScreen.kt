@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2022-2025 Elshan Agaev
+ * Copyright (c) 2022-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -106,19 +106,19 @@ private fun AboutScreen(
       ListItemExpressive(
         icon = Symbols.PrivacyTip,
         headlineText = stringResource(Res.string.settings_terms_and_conditions),
-        onClick = { linkOpener.launch("https://sadellie.github.io/unitto/terms") },
+        onClick = { linkOpener.launch(Config.TERMS_LINK) },
         shape = ListItemExpressiveDefaults.middleShape,
       )
       ListItemExpressive(
         icon = Symbols.Policy,
         headlineText = stringResource(Res.string.settings_privacy_policy),
-        onClick = { linkOpener.launch("https://sadellie.github.io/unitto/privacy") },
+        onClick = { linkOpener.launch(Config.PRIVACY_LINK) },
         shape = ListItemExpressiveDefaults.middleShape,
       )
       ListItemExpressive(
         icon = Symbols.Code,
         headlineText = stringResource(Res.string.settings_view_source_code),
-        onClick = { linkOpener.launch("https://github.com/sadellie/unitto") },
+        onClick = { linkOpener.launch(Config.SOURCE_CODE_LINK) },
         shape = ListItemExpressiveDefaults.middleShape,
       )
       ListItemExpressive(

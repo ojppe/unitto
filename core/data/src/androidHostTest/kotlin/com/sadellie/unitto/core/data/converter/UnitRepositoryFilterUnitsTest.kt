@@ -46,18 +46,14 @@ import com.sadellie.unitto.core.database.CurrencyRatesDaoInMemory
 import com.sadellie.unitto.core.database.UnitsDaoInMemory
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.UnitsListSorting
-import kotlinx.coroutines.test.TestScope
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment
 
 @RunWith(RobolectricTestRunner::class)
 class UnitRepositoryFilterUnitsTest {
-  private val testScope = TestScope(UnconfinedTestDispatcher())
   private val fakeCurrencyApiService = FakeCurrencyApiService()
   private val fakeCurrencyRatesDao = CurrencyRatesDaoInMemory()
   private val fakeUnitsDao = UnitsDaoInMemory()
@@ -66,112 +62,110 @@ class UnitRepositoryFilterUnitsTest {
     UnitConverterRepositoryImpl(unitsRepository, fakeCurrencyRatesDao, fakeCurrencyApiService)
 
   @Test
-  fun filterUnits_getAll() =
-    testScope.runTest {
-      val expected =
-        mapOf(
-            UnitGroup.LENGTH to lengthCollection,
-            UnitGroup.CURRENCY to currencyCollection,
-            UnitGroup.MASS to massCollection,
-            UnitGroup.SPEED to speedCollection,
-            UnitGroup.TEMPERATURE to temperatureCollection,
-            UnitGroup.AREA to areaCollection,
-            UnitGroup.TIME to timeCollection,
-            UnitGroup.VOLUME to volumeCollection,
-            UnitGroup.DATA to dataCollection,
-            UnitGroup.PRESSURE to pressureCollection,
-            UnitGroup.ACCELERATION to accelerationCollection,
-            UnitGroup.ENERGY to energyCollection,
-            UnitGroup.POWER to powerCollection,
-            UnitGroup.ANGLE to angleCollection,
-            UnitGroup.DATA_TRANSFER to dataTransferCollection,
-            UnitGroup.FLUX to fluxCollection,
-            UnitGroup.NUMBER_BASE to numberBaseCollection,
-            UnitGroup.ELECTROSTATIC_CAPACITANCE to electrostaticCapacitance,
-            UnitGroup.PREFIX to prefixCollection,
-            UnitGroup.FORCE to forceCollection,
-            UnitGroup.TORQUE to torqueCollection,
-            UnitGroup.FLOW_RATE to flowRateCollection,
-            UnitGroup.LUMINANCE to luminanceCollection,
-            UnitGroup.FUEL_CONSUMPTION to fuelConsumptionCollection,
-          )
-          .mapValues { (_, v) ->
-            v.map { unit -> UnitSearchResultItem(unit, UnitStats(unit.id), null) }
-          }
-
-      val actual =
-        unitConverterRepo.filterUnits(
-          query = "",
-          unitGroups =
-            listOf(
-              UnitGroup.LENGTH,
-              UnitGroup.CURRENCY,
-              UnitGroup.MASS,
-              UnitGroup.SPEED,
-              UnitGroup.TEMPERATURE,
-              UnitGroup.AREA,
-              UnitGroup.TIME,
-              UnitGroup.VOLUME,
-              UnitGroup.DATA,
-              UnitGroup.PRESSURE,
-              UnitGroup.ACCELERATION,
-              UnitGroup.ENERGY,
-              UnitGroup.POWER,
-              UnitGroup.ANGLE,
-              UnitGroup.DATA_TRANSFER,
-              UnitGroup.FLUX,
-              UnitGroup.NUMBER_BASE,
-              UnitGroup.ELECTROSTATIC_CAPACITANCE,
-              UnitGroup.PREFIX,
-              UnitGroup.FORCE,
-              UnitGroup.TORQUE,
-              UnitGroup.FLOW_RATE,
-              UnitGroup.LUMINANCE,
-              UnitGroup.FUEL_CONSUMPTION,
-            ),
-          favoritesOnly = false,
-          sorting = UnitsListSorting.USAGE,
+  fun filterUnits_getAll() = runTest {
+    val expected =
+      mapOf(
+          UnitGroup.LENGTH to lengthCollection,
+          UnitGroup.CURRENCY to currencyCollection,
+          UnitGroup.MASS to massCollection,
+          UnitGroup.SPEED to speedCollection,
+          UnitGroup.TEMPERATURE to temperatureCollection,
+          UnitGroup.AREA to areaCollection,
+          UnitGroup.TIME to timeCollection,
+          UnitGroup.VOLUME to volumeCollection,
+          UnitGroup.DATA to dataCollection,
+          UnitGroup.PRESSURE to pressureCollection,
+          UnitGroup.ACCELERATION to accelerationCollection,
+          UnitGroup.ENERGY to energyCollection,
+          UnitGroup.POWER to powerCollection,
+          UnitGroup.ANGLE to angleCollection,
+          UnitGroup.DATA_TRANSFER to dataTransferCollection,
+          UnitGroup.FLUX to fluxCollection,
+          UnitGroup.NUMBER_BASE to numberBaseCollection,
+          UnitGroup.ELECTROSTATIC_CAPACITANCE to electrostaticCapacitance,
+          UnitGroup.PREFIX to prefixCollection,
+          UnitGroup.FORCE to forceCollection,
+          UnitGroup.TORQUE to torqueCollection,
+          UnitGroup.FLOW_RATE to flowRateCollection,
+          UnitGroup.LUMINANCE to luminanceCollection,
+          UnitGroup.FUEL_CONSUMPTION to fuelConsumptionCollection,
         )
+        .mapValues { (_, v) ->
+          v.map { unit -> UnitSearchResultItem(unit, UnitStats(unit.id), null) }
+        }
 
-      assertEquals(expected, actual)
-    }
+    val actual =
+      unitConverterRepo.filterUnits(
+        query = "",
+        unitGroups =
+          listOf(
+            UnitGroup.LENGTH,
+            UnitGroup.CURRENCY,
+            UnitGroup.MASS,
+            UnitGroup.SPEED,
+            UnitGroup.TEMPERATURE,
+            UnitGroup.AREA,
+            UnitGroup.TIME,
+            UnitGroup.VOLUME,
+            UnitGroup.DATA,
+            UnitGroup.PRESSURE,
+            UnitGroup.ACCELERATION,
+            UnitGroup.ENERGY,
+            UnitGroup.POWER,
+            UnitGroup.ANGLE,
+            UnitGroup.DATA_TRANSFER,
+            UnitGroup.FLUX,
+            UnitGroup.NUMBER_BASE,
+            UnitGroup.ELECTROSTATIC_CAPACITANCE,
+            UnitGroup.PREFIX,
+            UnitGroup.FORCE,
+            UnitGroup.TORQUE,
+            UnitGroup.FLOW_RATE,
+            UnitGroup.LUMINANCE,
+            UnitGroup.FUEL_CONSUMPTION,
+          ),
+        favoritesOnly = false,
+        sorting = UnitsListSorting.USAGE,
+      )
+
+    assertEquals(expected, actual)
+  }
 
   // FIXME not provided to resource loader
   @Test
-  fun filterUnits_verySpecific() =
-    testScope.runTest {
-      // fill database with some garbage
-      unitConverterRepo.incrementCounter(UnitID.mile)
-      unitConverterRepo.incrementCounter(UnitID.mile)
-      unitConverterRepo.incrementCounter(UnitID.mile)
-      unitConverterRepo.incrementCounter(UnitID.kilometer)
-      unitConverterRepo.incrementCounter(UnitID.kilometer)
-      unitConverterRepo.incrementCounter(UnitID.meter)
-      unitConverterRepo.incrementCounter(UnitID.meter)
-      unitConverterRepo.favorite(UnitID.meter)
-      unitConverterRepo.incrementCounter(UnitID.attometer)
+  fun filterUnits_verySpecific() = runTest {
+    // fill database with some garbage
+    unitConverterRepo.incrementCounter(UnitID.mile)
+    unitConverterRepo.incrementCounter(UnitID.mile)
+    unitConverterRepo.incrementCounter(UnitID.mile)
+    unitConverterRepo.incrementCounter(UnitID.kilometer)
+    unitConverterRepo.incrementCounter(UnitID.kilometer)
+    unitConverterRepo.incrementCounter(UnitID.meter)
+    unitConverterRepo.incrementCounter(UnitID.meter)
+    unitConverterRepo.favorite(UnitID.meter)
+    unitConverterRepo.incrementCounter(UnitID.attometer)
 
-      val expected =
-        mapOf(
-          UnitGroup.LENGTH to
-            listOf(
-              UnitSearchResultItem(
-                lengthCollection.first { it.id == UnitID.meter },
-                UnitStats(UnitID.meter, isFavorite = true, frequency = 2),
-                null,
-              )
+    val expected =
+      mapOf(
+        UnitGroup.LENGTH to
+          listOf(
+            UnitSearchResultItem(
+              lengthCollection.first { it.id == UnitID.meter },
+              UnitStats(UnitID.meter, isFavorite = true, frequency = 2),
+              null,
             )
-        )
+          )
+      )
 
-      val actual =
-        unitConverterRepo.filterUnits(
-          // intentional typo in query
-          query = "meteer",
-          unitGroups = listOf(UnitGroup.LENGTH),
-          favoritesOnly = true,
-          sorting = UnitsListSorting.USAGE,
-        )
+    val actual =
+      unitConverterRepo.filterUnits(
+        // intentional typo in query
+        query = "meteer",
+        unitGroups = listOf(UnitGroup.LENGTH),
+        favoritesOnly = true,
+        sorting = UnitsListSorting.USAGE,
+      )
 
-      assertEquals(expected, actual)
-    }
+    assertEquals(expected, actual)
+  }
 }

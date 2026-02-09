@@ -21,17 +21,11 @@ package com.sadellie.unitto.core.data.converter
 import com.sadellie.unitto.core.database.CurrencyRatesDaoInMemory
 import com.sadellie.unitto.core.database.UnitsDaoInMemory
 import com.sadellie.unitto.core.database.UnitsEntity
-import kotlinx.coroutines.test.TestScope
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
 class UnitRepositorySetPairTest {
-  private val testScope = TestScope(UnconfinedTestDispatcher())
   private val fakeCurrencyApiService = FakeCurrencyApiService()
   private val fakeCurrencyRatesDao = CurrencyRatesDaoInMemory()
   private val fakeUnitsDao = UnitsDaoInMemory()
@@ -40,25 +34,23 @@ class UnitRepositorySetPairTest {
     UnitConverterRepositoryImpl(unitsRepository, fakeCurrencyRatesDao, fakeCurrencyApiService)
 
   @Test
-  fun setPair_createNewEntry() =
-    testScope.runTest {
-      unitConverterRepo.setPair(UnitID.kilometer, UnitID.mile)
+  fun setPair_createNewEntry() = runTest {
+    unitConverterRepo.setPair(UnitID.kilometer, UnitID.mile)
 
-      val expected = UnitsEntity(unitId = UnitID.kilometer, pairedUnitId = UnitID.mile)
-      val actual = fakeUnitsDao.getById(UnitID.kilometer)
+    val expected = UnitsEntity(unitId = UnitID.kilometer, pairedUnitId = UnitID.mile)
+    val actual = fakeUnitsDao.getById(UnitID.kilometer)
 
-      assertEquals(expected, actual)
-    }
+    assertEquals(expected, actual)
+  }
 
   @Test
-  fun setPair_updateExisting() =
-    testScope.runTest {
-      unitConverterRepo.setPair(UnitID.kilometer, UnitID.inch)
-      unitConverterRepo.setPair(UnitID.kilometer, UnitID.mile)
+  fun setPair_updateExisting() = runTest {
+    unitConverterRepo.setPair(UnitID.kilometer, UnitID.inch)
+    unitConverterRepo.setPair(UnitID.kilometer, UnitID.mile)
 
-      val expected = UnitsEntity(unitId = UnitID.kilometer, pairedUnitId = UnitID.mile)
-      val actual = fakeUnitsDao.getById(UnitID.kilometer)
+    val expected = UnitsEntity(unitId = UnitID.kilometer, pairedUnitId = UnitID.mile)
+    val actual = fakeUnitsDao.getById(UnitID.kilometer)
 
-      assertEquals(expected, actual)
-    }
+    assertEquals(expected, actual)
+  }
 }

@@ -26,8 +26,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 interface UnitConverterRepository {
   val currencyRateUpdateState: MutableStateFlow<CurrencyRateUpdateState>
 
-  fun updateApiUrl(newApiUrl: String)
-
   suspend fun getById(id: String): BasicUnit
 
   suspend fun getPairId(id: String): String
@@ -53,6 +51,7 @@ interface UnitConverterRepository {
     unitFromId: String,
     input1: String,
     input2: String,
+    apiUrl: String,
   ): Map<UnitGroup, List<UnitSearchResultItem>>
 
   suspend fun convert(
@@ -61,5 +60,6 @@ interface UnitConverterRepository {
     value1: String,
     value2: String,
     formatTime: Boolean,
+    apiUrl: String,
   ): ConverterResult
 }

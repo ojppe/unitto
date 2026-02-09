@@ -21,17 +21,11 @@ package com.sadellie.unitto.core.data.converter
 import com.sadellie.unitto.core.database.CurrencyRatesDaoInMemory
 import com.sadellie.unitto.core.database.UnitsDaoInMemory
 import com.sadellie.unitto.core.database.UnitsEntity
-import kotlinx.coroutines.test.TestScope
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
 class UnitRepositoryIncrementCounterTest {
-  private val testScope = TestScope(UnconfinedTestDispatcher())
   private val fakeCurrencyApiService = FakeCurrencyApiService()
   private val fakeCurrencyRatesDao = CurrencyRatesDaoInMemory()
   private val fakeUnitsDao = UnitsDaoInMemory()
@@ -40,25 +34,23 @@ class UnitRepositoryIncrementCounterTest {
     UnitConverterRepositoryImpl(unitsRepository, fakeCurrencyRatesDao, fakeCurrencyApiService)
 
   @Test
-  fun incrementCounter_createNewEntry() =
-    testScope.runTest {
-      unitConverterRepo.incrementCounter(UnitID.kilometer)
+  fun incrementCounter_createNewEntry() = runTest {
+    unitConverterRepo.incrementCounter(UnitID.kilometer)
 
-      val expected = UnitsEntity(unitId = UnitID.kilometer, frequency = 1)
-      val actual = fakeUnitsDao.getById(UnitID.kilometer)
+    val expected = UnitsEntity(unitId = UnitID.kilometer, frequency = 1)
+    val actual = fakeUnitsDao.getById(UnitID.kilometer)
 
-      assertEquals(expected, actual)
-    }
+    assertEquals(expected, actual)
+  }
 
   @Test
-  fun incrementCounter_updateExisting() =
-    testScope.runTest {
-      unitConverterRepo.incrementCounter(UnitID.kilometer)
-      unitConverterRepo.incrementCounter(UnitID.kilometer)
-      unitConverterRepo.incrementCounter(UnitID.kilometer)
-      val expected = UnitsEntity(unitId = UnitID.kilometer, frequency = 3)
-      val actual = fakeUnitsDao.getById(UnitID.kilometer)
+  fun incrementCounter_updateExisting() = runTest {
+    unitConverterRepo.incrementCounter(UnitID.kilometer)
+    unitConverterRepo.incrementCounter(UnitID.kilometer)
+    unitConverterRepo.incrementCounter(UnitID.kilometer)
+    val expected = UnitsEntity(unitId = UnitID.kilometer, frequency = 3)
+    val actual = fakeUnitsDao.getById(UnitID.kilometer)
 
-      assertEquals(expected, actual)
-    }
+    assertEquals(expected, actual)
+  }
 }

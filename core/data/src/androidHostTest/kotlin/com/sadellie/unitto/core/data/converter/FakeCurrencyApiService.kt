@@ -22,7 +22,7 @@ import com.sadellie.unitto.core.remote.CurrencyApiResponse
 import com.sadellie.unitto.core.remote.CurrencyApiService
 
 class FakeCurrencyApiService : CurrencyApiService {
-  override suspend fun getCurrencyPairs(baseCurrency: String): CurrencyApiResponse {
+  override suspend fun getCurrencyPairs(baseCurrency: String, apiUrl: String): CurrencyApiResponse {
     val currencyMap =
       when (baseCurrency) {
         UnitID.currency_usd ->

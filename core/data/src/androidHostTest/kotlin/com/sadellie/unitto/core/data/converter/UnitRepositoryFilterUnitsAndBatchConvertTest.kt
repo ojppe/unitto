@@ -27,17 +27,11 @@ import com.sadellie.unitto.core.database.CurrencyRatesDaoInMemory
 import com.sadellie.unitto.core.database.UnitsDaoInMemory
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.UnitsListSorting
-import kotlinx.coroutines.test.TestScope
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
 class UnitRepositoryFilterUnitsAndBatchConvertTest {
-  private val testScope = TestScope(UnconfinedTestDispatcher())
   private val fakeCurrencyApiService = FakeCurrencyApiService()
   private val fakeCurrencyRatesDao = CurrencyRatesDaoInMemory()
   private val fakeUnitsDao = UnitsDaoInMemory()
@@ -46,159 +40,159 @@ class UnitRepositoryFilterUnitsAndBatchConvertTest {
     UnitConverterRepositoryImpl(unitsRepository, fakeCurrencyRatesDao, fakeCurrencyApiService)
 
   @Test
-  fun filterUnitsAndBatchConvert_convertWithoutIssues() =
-    testScope.runTest {
-      unitConverterRepo.favorite(UnitID.meter)
+  fun filterUnitsAndBatchConvert_convertWithoutIssues() = runTest {
+    unitConverterRepo.favorite(UnitID.meter)
 
-      val expected =
-        mapOf(
-          UnitGroup.LENGTH to
-            listOf(
-              UnitSearchResultItem(
-                lengthCollection.first { it.id == UnitID.meter },
-                UnitStats(UnitID.meter, isFavorite = true, frequency = 0),
-                ConverterResult.Default(
-                  value = KBigDecimal("12000").setMaxScale(),
-                  calculation = KBigDecimal("12").setMaxScale(),
-                ),
-              )
+    val expected =
+      mapOf(
+        UnitGroup.LENGTH to
+          listOf(
+            UnitSearchResultItem(
+              lengthCollection.first { it.id == UnitID.meter },
+              UnitStats(UnitID.meter, isFavorite = true, frequency = 0),
+              ConverterResult.Default(
+                value = KBigDecimal("12000").setMaxScale(),
+                calculation = KBigDecimal("12").setMaxScale(),
+              ),
             )
-        )
+          )
+      )
 
-      val actual =
-        unitConverterRepo.filterUnitsAndBatchConvert(
-          query = "",
-          unitGroup = UnitGroup.LENGTH,
-          favoritesOnly = true,
-          sorting = UnitsListSorting.USAGE,
-          unitFromId = UnitID.kilometer,
-          input1 = "12",
-          input2 = "",
-        )
+    val actual =
+      unitConverterRepo.filterUnitsAndBatchConvert(
+        query = "",
+        unitGroup = UnitGroup.LENGTH,
+        favoritesOnly = true,
+        sorting = UnitsListSorting.USAGE,
+        unitFromId = UnitID.kilometer,
+        input1 = "12",
+        input2 = "",
+        apiUrl = "",
+      )
 
-      assertEquals(expected, actual)
-    }
+    assertEquals(expected, actual)
+  }
 
   @Test
-  fun filterUnitsAndBatchConvert_convertCurrency() =
-    testScope.runTest {
-      unitConverterRepo.favorite(UnitID.currency_usd)
+  fun filterUnitsAndBatchConvert_convertCurrency() = runTest {
+    unitConverterRepo.favorite(UnitID.currency_usd)
 
-      val expected =
-        mapOf(
-          UnitGroup.CURRENCY to
-            listOf(
-              UnitSearchResultItem(
-                currencyCollection.first { it.id == UnitID.currency_usd },
-                UnitStats(UnitID.currency_usd, isFavorite = true, frequency = 0),
-                ConverterResult.Default(
-                  value =
-                    KBigDecimal("24")
-                      .setScale(BATCH_CURRENCY_CONVERSION_SCALE, KRoundingMode.HALF_EVEN),
-                  calculation = KBigDecimal("12").setMaxScale(),
-                ),
-              )
+    val expected =
+      mapOf(
+        UnitGroup.CURRENCY to
+          listOf(
+            UnitSearchResultItem(
+              currencyCollection.first { it.id == UnitID.currency_usd },
+              UnitStats(UnitID.currency_usd, isFavorite = true, frequency = 0),
+              ConverterResult.Default(
+                value =
+                  KBigDecimal("24")
+                    .setScale(BATCH_CURRENCY_CONVERSION_SCALE, KRoundingMode.HALF_EVEN),
+                calculation = KBigDecimal("12").setMaxScale(),
+              ),
             )
-        )
+          )
+      )
 
-      val actual =
-        unitConverterRepo.filterUnitsAndBatchConvert(
-          query = "",
-          unitGroup = UnitGroup.CURRENCY,
-          favoritesOnly = true,
-          sorting = UnitsListSorting.USAGE,
-          unitFromId = UnitID.currency_eur,
-          input1 = "12",
-          input2 = "",
-        )
+    val actual =
+      unitConverterRepo.filterUnitsAndBatchConvert(
+        query = "",
+        unitGroup = UnitGroup.CURRENCY,
+        favoritesOnly = true,
+        sorting = UnitsListSorting.USAGE,
+        unitFromId = UnitID.currency_eur,
+        input1 = "12",
+        input2 = "",
+        apiUrl = "",
+      )
 
-      assertEquals(expected, actual)
-    }
+    assertEquals(expected, actual)
+  }
 
   @Test
-  fun filterUnitsAndBatchConvert_brokenInput() =
-    testScope.runTest {
-      unitConverterRepo.favorite(UnitID.meter)
+  fun filterUnitsAndBatchConvert_brokenInput() = runTest {
+    unitConverterRepo.favorite(UnitID.meter)
 
-      val expected =
-        mapOf(
-          UnitGroup.LENGTH to
-            listOf(
-              UnitSearchResultItem(
-                lengthCollection.first { it.id == UnitID.meter },
-                UnitStats(UnitID.meter, isFavorite = true, frequency = 0),
-                null,
-              )
+    val expected =
+      mapOf(
+        UnitGroup.LENGTH to
+          listOf(
+            UnitSearchResultItem(
+              lengthCollection.first { it.id == UnitID.meter },
+              UnitStats(UnitID.meter, isFavorite = true, frequency = 0),
+              null,
             )
-        )
+          )
+      )
 
-      val actual =
-        unitConverterRepo.filterUnitsAndBatchConvert(
-          query = "",
-          unitGroup = UnitGroup.LENGTH,
-          favoritesOnly = true,
-          sorting = UnitsListSorting.USAGE,
-          unitFromId = UnitID.kilometer,
-          input1 = "!!!",
-          input2 = "",
-        )
+    val actual =
+      unitConverterRepo.filterUnitsAndBatchConvert(
+        query = "",
+        unitGroup = UnitGroup.LENGTH,
+        favoritesOnly = true,
+        sorting = UnitsListSorting.USAGE,
+        unitFromId = UnitID.kilometer,
+        input1 = "!!!",
+        input2 = "",
+        apiUrl = "",
+      )
 
-      assertEquals(expected, actual)
-    }
+    assertEquals(expected, actual)
+  }
 
   @Test
-  fun filterUnitsAndBatchConvert_brokenCurrenciesApi() =
-    testScope.runTest {
-      unitConverterRepo.favorite(UnitID.currency_eth)
+  fun filterUnitsAndBatchConvert_brokenCurrenciesApi() = runTest {
+    unitConverterRepo.favorite(UnitID.currency_eth)
 
-      // do not return units if they can't be converted
-      val expected = emptyMap<UnitGroup, List<UnitSearchResultItem>>()
+    // do not return units if they can't be converted
+    val expected = emptyMap<UnitGroup, List<UnitSearchResultItem>>()
 
-      val actual =
-        unitConverterRepo.filterUnitsAndBatchConvert(
-          query = "",
-          unitGroup = UnitGroup.CURRENCY,
-          favoritesOnly = true,
-          sorting = UnitsListSorting.USAGE,
-          unitFromId = UnitID.currency_eth,
-          input1 = "12",
-          input2 = "",
-        )
+    val actual =
+      unitConverterRepo.filterUnitsAndBatchConvert(
+        query = "",
+        unitGroup = UnitGroup.CURRENCY,
+        favoritesOnly = true,
+        sorting = UnitsListSorting.USAGE,
+        unitFromId = UnitID.currency_eth,
+        input1 = "12",
+        input2 = "",
+        apiUrl = "",
+      )
 
-      assertEquals(expected, actual)
-    }
+    assertEquals(expected, actual)
+  }
 
   @Test
-  fun filterUnitsAndBatchConvert_convertFootInchInput() =
-    testScope.runTest {
-      unitConverterRepo.favorite(UnitID.inch)
+  fun filterUnitsAndBatchConvert_convertFootInchInput() = runTest {
+    unitConverterRepo.favorite(UnitID.inch)
 
-      val expected =
-        mapOf(
-          UnitGroup.LENGTH to
-            listOf(
-              UnitSearchResultItem(
-                lengthCollection.first { it.id == UnitID.inch },
-                UnitStats(UnitID.inch, isFavorite = true, frequency = 0),
-                ConverterResult.Default(
-                  value = KBigDecimal("126").setMaxScale(),
-                  calculation = KBigDecimal("10.5").setMaxScale(),
-                ),
-              )
+    val expected =
+      mapOf(
+        UnitGroup.LENGTH to
+          listOf(
+            UnitSearchResultItem(
+              lengthCollection.first { it.id == UnitID.inch },
+              UnitStats(UnitID.inch, isFavorite = true, frequency = 0),
+              ConverterResult.Default(
+                value = KBigDecimal("126").setMaxScale(),
+                calculation = KBigDecimal("10.5").setMaxScale(),
+              ),
             )
-        )
+          )
+      )
 
-      val actual =
-        unitConverterRepo.filterUnitsAndBatchConvert(
-          query = "",
-          unitGroup = UnitGroup.LENGTH,
-          favoritesOnly = true,
-          sorting = UnitsListSorting.USAGE,
-          unitFromId = UnitID.foot,
-          input1 = "10",
-          input2 = "6",
-        )
+    val actual =
+      unitConverterRepo.filterUnitsAndBatchConvert(
+        query = "",
+        unitGroup = UnitGroup.LENGTH,
+        favoritesOnly = true,
+        sorting = UnitsListSorting.USAGE,
+        unitFromId = UnitID.foot,
+        input1 = "10",
+        input2 = "6",
+        apiUrl = "",
+      )
 
-      assertEquals(expected, actual)
-    }
+    assertEquals(expected, actual)
+  }
 }

@@ -24,21 +24,15 @@ import com.sadellie.unitto.core.database.UnitsDaoInMemory
 import com.sadellie.unitto.core.model.converter.UnitGroup
 import com.sadellie.unitto.core.model.converter.unit.NormalUnit
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.TestScope
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThrows
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import unitto.core.common.generated.resources.Res
 import unitto.core.common.generated.resources.unit_attometer
 import unitto.core.common.generated.resources.unit_attometer_short
 
-@RunWith(RobolectricTestRunner::class)
 class UnitRepositoryGetByIdTest {
-  private val testScope = TestScope(UnconfinedTestDispatcher())
   private val fakeCurrencyApiService = FakeCurrencyApiService()
   private val fakeCurrencyRatesDao = CurrencyRatesDaoInMemory()
   private val fakeUnitsDao = UnitsDaoInMemory()
@@ -47,26 +41,24 @@ class UnitRepositoryGetByIdTest {
     UnitConverterRepositoryImpl(unitsRepository, fakeCurrencyRatesDao, fakeCurrencyApiService)
 
   @Test
-  fun getById_findRealUnit() =
-    testScope.runTest {
-      val expected =
-        NormalUnit(
-          UnitID.attometer,
-          KBigDecimal("1"),
-          UnitGroup.LENGTH,
-          Res.string.unit_attometer,
-          Res.string.unit_attometer_short,
-        )
-      val actual = unitConverterRepo.getById(UnitID.attometer)
+  fun getById_findRealUnit() = runTest {
+    val expected =
+      NormalUnit(
+        UnitID.attometer,
+        KBigDecimal("1"),
+        UnitGroup.LENGTH,
+        Res.string.unit_attometer,
+        Res.string.unit_attometer_short,
+      )
+    val actual = unitConverterRepo.getById(UnitID.attometer)
 
-      assertEquals(expected, actual)
-    }
+    assertEquals(expected, actual)
+  }
 
   @Test
-  fun getById_failToFind() =
-    testScope.runTest {
-      assertThrows(NoSuchElementException::class.java) {
-        runBlocking { unitConverterRepo.getById("") }
-      }
+  fun getById_failToFind() = runTest {
+    assertThrows(NoSuchElementException::class.java) {
+      runBlocking { unitConverterRepo.getById("") }
     }
+  }
 }

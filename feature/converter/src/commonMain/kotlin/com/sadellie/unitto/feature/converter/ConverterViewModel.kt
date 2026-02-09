@@ -26,6 +26,7 @@ import com.sadellie.unitto.core.common.OutputFormat
 import com.sadellie.unitto.core.common.stateIn
 import com.sadellie.unitto.core.data.converter.ConverterResult
 import com.sadellie.unitto.core.data.converter.UnitConverterRepository
+import com.sadellie.unitto.core.datastore.ConverterPreferences
 import com.sadellie.unitto.core.datastore.UserPreferencesRepository
 import com.sadellie.unitto.core.model.converter.unit.BasicUnit
 import com.sadellie.unitto.core.navigation.ConverterStartRoute
@@ -131,11 +132,11 @@ internal class ConverterViewModel(
         unitToIdValue,
         converterPrefsValue ->
         convert(
-          input1Value.toString(),
-          input2Value.toString(),
-          unitFromIdValue,
-          unitToIdValue,
-          converterPrefsValue.unitConverterFormatTime,
+          input1Value = input1Value.toString(),
+          input2Value = input2Value.toString(),
+          unitFromIdValue = unitFromIdValue,
+          unitToIdValue = unitToIdValue,
+          prefs = converterPrefsValue,
         )
       }
       .collectLatest {}
@@ -145,11 +146,11 @@ internal class ConverterViewModel(
     viewModelScope.launch {
       val prefs = userPrefsRepository.converterPrefs.first()
       convert(
-        _input1.text.toString(),
-        _input2.text.toString(),
-        _unitFromId.value,
-        _unitToId.value,
-        prefs.unitConverterFormatTime,
+        input1Value = _input1.text.toString(),
+        input2Value = _input2.text.toString(),
+        unitFromIdValue = _unitFromId.value,
+        unitToIdValue = _unitToId.value,
+        prefs = prefs,
       )
     }
   }
@@ -186,7 +187,7 @@ internal class ConverterViewModel(
     input2Value: String,
     unitFromIdValue: String?,
     unitToIdValue: String?,
-    formatTime: Boolean,
+    prefs: ConverterPreferences,
   ) {
     _conversionJob?.cancel()
     _conversionJob =
@@ -198,7 +199,8 @@ internal class ConverterViewModel(
               unitToId = unitToIdValue ?: return@launch,
               value1 = input1Value,
               value2 = input2Value,
-              formatTime = formatTime,
+              formatTime = prefs.unitConverterFormatTime,
+              apiUrl = prefs.customApiUrl,
             )
           } catch (e: ExpressionException) {
             Logger.w(TAG, e) { "Failed to convert" }
@@ -216,12 +218,11 @@ internal class ConverterViewModel(
 
   private fun loadInitialUnits() =
     viewModelScope.launch {
-      val prefs = userPrefsRepository.converterPrefs.first()
-      unitsRepo.updateApiUrl(prefs.customApiUrl)
       if (canUseUnitIdsFromArgs()) {
         _unitFromId.update { args.unitFromId }
         _unitToId.update { args.unitToId }
       } else {
+        val prefs = userPrefsRepository.converterPrefs.first()
         _unitFromId.update { prefs.latestLeftSideUnit }
         _unitToId.update { prefs.latestRightSideUnit }
       }

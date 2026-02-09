@@ -51,10 +51,6 @@ class UnitConverterRepositoryImpl(
   override val currencyRateUpdateState =
     MutableStateFlow<CurrencyRateUpdateState>(CurrencyRateUpdateState.Nothing)
 
-  override fun updateApiUrl(newApiUrl: String) {
-    currencyApiService.apiUrl = newApiUrl
-  }
-
   override suspend fun getById(id: String): BasicUnit = unitsRepo.getById(id)
 
   override suspend fun getPairId(id: String): String = unitsRepo.getPairId(id)
@@ -90,6 +86,7 @@ class UnitConverterRepositoryImpl(
     unitFromId: String,
     input1: String,
     input2: String,
+    apiUrl: String,
   ): Map<UnitGroup, List<UnitSearchResultItem>> =
     withContext(defaultIODispatcher) {
       val unitFrom = getById(unitFromId)
@@ -116,6 +113,7 @@ class UnitConverterRepositoryImpl(
                 input = input1,
                 unitSearchResultItems = units,
                 unitFrom = unitFrom as BasicUnit.Default,
+                apiUrl = apiUrl,
               )
 
             // foot and inches input
@@ -155,6 +153,7 @@ class UnitConverterRepositoryImpl(
     value1: String,
     value2: String,
     formatTime: Boolean,
+    apiUrl: String,
   ): ConverterResult {
     val unitFrom = getById(unitFromId)
     val unitTo = getById(unitToId)
@@ -178,6 +177,7 @@ class UnitConverterRepositoryImpl(
           unitFrom = unitFrom as BasicUnit.Default,
           unitTo = unitTo as BasicUnit.Default,
           value = calculateInput(value1),
+          apiUrl = apiUrl,
         )
 
       // foot and inches output and input
@@ -260,6 +260,7 @@ class UnitConverterRepositoryImpl(
     input: String,
     unitSearchResultItems: Sequence<UnitSearchResultItem>,
     unitFrom: BasicUnit.Default,
+    apiUrl: String,
   ) =
     withContext(Dispatchers.Default) {
       val calculatedInput = calculateInput(input)
@@ -267,7 +268,7 @@ class UnitConverterRepositoryImpl(
         return@withContext unitSearchResultItems.toList()
 
       val result = mutableListOf<UnitSearchResultItem>()
-      refreshCurrencyRates(unitFrom.id)
+      refreshCurrencyRates(unitFrom.id, apiUrl)
       unitSearchResultItems.forEach { unitSearchResultItem ->
         val latestRate =
           currencyRatesDao
@@ -464,9 +465,10 @@ class UnitConverterRepositoryImpl(
     unitFrom: BasicUnit.Default,
     unitTo: BasicUnit.Default,
     value: KBigDecimal,
+    apiUrl: String,
   ): ConverterResult =
     withContext(defaultIODispatcher) {
-      refreshCurrencyRates(unitFrom.id)
+      refreshCurrencyRates(unitFrom.id, apiUrl)
 
       val latestRate = currencyRatesDao.getLatestRate(unitFrom.id, unitTo.id)
       val pairUnitValue = latestRate?.pairUnitValue
@@ -485,7 +487,7 @@ class UnitConverterRepositoryImpl(
     }
 
   @OptIn(ExperimentalTime::class)
-  private suspend fun refreshCurrencyRates(unitFromId: String) =
+  private suspend fun refreshCurrencyRates(unitFromId: String, apiUrl: String) =
     withContext(defaultIODispatcher) {
       val latestUpdateDate = currencyRatesDao.getLatestRateTimeStamp(unitFromId)
       val currentDate =
@@ -495,7 +497,7 @@ class UnitConverterRepositoryImpl(
         // Update cache if needed
         currencyRateUpdateState.update { CurrencyRateUpdateState.Loading }
         try {
-          val conversions = currencyApiService.getCurrencyPairs(unitFromId)
+          val conversions = currencyApiService.getCurrencyPairs(unitFromId, apiUrl)
           val rates =
             conversions.currency.map { (pairId, pairValue) ->
               CurrencyRatesEntity(

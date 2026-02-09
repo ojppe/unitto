@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2024-2025 Elshan Agaev
+ * Copyright (c) 2024-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -103,6 +103,7 @@ internal class UnitToSelectorViewModel(
             unitFromId = args.unitFromId,
             input1 = args.input1,
             input2 = args.input2,
+            apiUrl = prefs.customApiUrl,
           )
 
         _searchResults.update { result }

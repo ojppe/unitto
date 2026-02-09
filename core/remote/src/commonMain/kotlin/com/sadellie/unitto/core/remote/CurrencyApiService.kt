@@ -26,24 +26,19 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.JsonElement
 
 interface CurrencyApiService {
-  var apiUrl: String
-
-  suspend fun getCurrencyPairs(baseCurrency: String): CurrencyApiResponse
+  suspend fun getCurrencyPairs(baseCurrency: String, apiUrl: String): CurrencyApiResponse
 }
 
 class CurrencyApiServiceImpl : CurrencyApiService {
   private val client by lazy { HttpClient { install(ContentNegotiation) { json() } } }
-  override var apiUrl: String = ""
-    set(value) {
-      field = value.ifBlank { BASE_URL }
-    }
 
-  override suspend fun getCurrencyPairs(baseCurrency: String): CurrencyApiResponse {
-    val response = client.get("$apiUrl/${baseCurrency}.json").body<JsonElement>()
+  override suspend fun getCurrencyPairs(baseCurrency: String, apiUrl: String): CurrencyApiResponse {
+    val baseApiUrl = apiUrl.ifEmpty { DEFAULT_BASE_URL }
+    val response = client.get("$baseApiUrl/${baseCurrency}.json").body<JsonElement>()
     val currencyApiResponse = CurrencyApiResponse.fromJsonElement(response, baseCurrency)
     return currencyApiResponse
   }
 }
 
-private const val BASE_URL =
+private const val DEFAULT_BASE_URL =
   "https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies"

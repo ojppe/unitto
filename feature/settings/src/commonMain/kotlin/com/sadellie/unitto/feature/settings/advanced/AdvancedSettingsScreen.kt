@@ -143,7 +143,7 @@ private fun PreviewAdvancedSettingsScreen() {
     updateCustomApiUrl = {},
     prefs =
       ConverterPreferences(
-        formatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD),
+        formatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD, false),
         middleZero = false,
         precision = 3,
         outputFormat = OutputFormat.PLAIN,

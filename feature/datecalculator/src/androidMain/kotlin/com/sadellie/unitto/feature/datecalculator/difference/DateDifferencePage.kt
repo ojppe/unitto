@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2025 Elshan Agaev
+ * Copyright (c) 2023-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -169,7 +169,7 @@ fun DateDifferenceViewPreview() = ExpressivePreview {
           ),
         precision = 3,
         outputFormat = OutputFormat.PLAIN,
-        formatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD),
+        formatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD, false),
       ),
     setStartDate = {},
     setEndDate = {},

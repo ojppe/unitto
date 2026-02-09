@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2025 Elshan Agaev
+ * Copyright (c) 2023-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -153,7 +153,7 @@ private const val CALCULATION_ALPHA = 0.6f
 private fun PreviewTextBox() {
   TextBox(
     modifier = Modifier.height(200.dp),
-    formatterSymbols = FormatterSymbols(Token.SPACE, Token.COMMA),
+    formatterSymbols = FormatterSymbols(Token.SPACE, Token.COMMA, false),
     state = TextFieldState("123456.789"),
     output = CalculationResult.Success("789012.345"),
     onEnter = {},
@@ -166,7 +166,7 @@ private fun PreviewTextBox() {
 private fun PreviewTextBoxNoHandle() {
   TextBox(
     modifier = Modifier.height(200.dp),
-    formatterSymbols = FormatterSymbols(Token.SPACE, Token.COMMA),
+    formatterSymbols = FormatterSymbols(Token.SPACE, Token.COMMA, false),
     state = TextFieldState("123456.789"),
     output = CalculationResult.Success("789012.345"),
     onEnter = {},

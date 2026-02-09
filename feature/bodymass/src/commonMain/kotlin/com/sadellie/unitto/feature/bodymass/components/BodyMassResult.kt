@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2024-2025 Elshan Agaev
+ * Copyright (c) 2024-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -177,8 +177,8 @@ private const val BODY_MASS_RANGE_SCALE = 0
 fun PreviewBodyMassResult() {
   BodyMassResult(
     value = KBigDecimal(18.5),
-    range = KBigDecimal(50) to KBigDecimal(80),
+    range = KBigDecimal(50.0) to KBigDecimal(80.0),
     rangeSuffix = "kg",
-    formatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD),
+    formatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD, false),
   )
 }

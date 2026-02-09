@@ -175,6 +175,7 @@
     <string name="settings_fractional_output_support">Show results as fractions</string>
     <string name="settings_history_view_button">History view button</string>
     <string name="settings_history_view_button_support">Show button to toggle history view</string>
+    <string name="settings_indian_numbering_system">Indian numbering system</string>
     <string name="settings_keep_screen_on">Keep screen on</string>
     <string name="settings_keep_screen_on_support">Prevent your device from turning off the screen while the app is open</string>
     <string name="settings_language">Language</string>

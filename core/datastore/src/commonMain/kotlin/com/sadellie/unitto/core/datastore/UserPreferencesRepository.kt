@@ -79,7 +79,7 @@ interface UserPreferencesRepository {
       get() = true
 
     val formatterSymbols: FormatterSymbols
-      get() = FormatterSymbols(Token.SPACE, Token.PERIOD)
+      get() = FormatterSymbols(Token.SPACE, Token.PERIOD, false)
 
     val middleZero: Boolean
       get() = true
@@ -138,7 +138,7 @@ interface UserPreferencesRepository {
 
   suspend fun updateDigitsPrecision(precision: Int)
 
-  suspend fun updateFormatterSymbols(grouping: String, fractional: String)
+  suspend fun updateFormatterSymbols(grouping: String, fractional: String, indian: Boolean)
 
   suspend fun updateOutputFormat(outputFormat: Int)
 

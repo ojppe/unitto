@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2025 Elshan Agaev
+ * Copyright (c) 2023-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -66,23 +66,35 @@ private fun String.formatExpressionNoFraction(formatterSymbols: FormatterSymbols
   return input
 }
 
+/**
+ * Format a single number ([this]) using [formatterSymbols]. This method inserts grouping symbols.
+ *
+ * @see FormatterSymbols.indian
+ */
 internal fun String.formatNumber(formatterSymbols: FormatterSymbols): String {
-  val input = this
+  if (this.any { it.isLetter() }) return this
 
-  if (input.any { it.isLetter() }) return input
+  val firstPart = this.takeWhile { it != '.' }
+  val remainingPart = this.removePrefix(firstPart)
 
-  var firstPart = input.takeWhile { it != '.' }
-  val remainingPart = input.removePrefix(firstPart)
-
-  // Number of empty symbols (spaces) we need to add to correctly split into chunks.
-  val offset = 3 - firstPart.length.mod(3)
   val output =
-    if (offset != 3) {
-      // We add some spaces at the beginning so that last chunk has 3 symbols
-      firstPart = " ".repeat(offset) + firstPart
-      firstPart.chunked(3).joinToString(formatterSymbols.grouping).drop(offset)
-    } else {
-      firstPart.chunked(3).joinToString(formatterSymbols.grouping)
+    when {
+      firstPart.length <= 3 -> firstPart
+      formatterSymbols.indian ->
+        firstPart
+          .dropLast(3) // 12354678 -> 12345
+          .reversed() // 54321
+          .chunked(2) // 54 32 1
+          .joinToString(formatterSymbols.grouping) // 54,32,1
+          .reversed() // 1,23,45
+          .plus(formatterSymbols.grouping)
+          .plus(firstPart.takeLast(3)) // last group is 12345[678]
+      else ->
+        firstPart
+          .reversed() // 12345678 -> 87654321
+          .chunked(3) // 876 543 21
+          .joinToString(formatterSymbols.grouping) // 876,543,21
+          .reversed() // 12,345,678
     }
 
   return output.plus(remainingPart.replace(".", formatterSymbols.fractional))

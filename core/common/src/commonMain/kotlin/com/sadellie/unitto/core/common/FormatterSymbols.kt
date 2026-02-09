@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2025 Elshan Agaev
+ * Copyright (c) 2025-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,5 +23,8 @@ package com.sadellie.unitto.core.common
  *
  * @property grouping Symbol fpr thousands separator.
  * @property fractional Symbol decimal separator.
+ * @property indian controls group sizes
+ * - `true` - 1,23,45,678
+ * - `false` - 12,345,678
  */
-data class FormatterSymbols(val grouping: String, val fractional: String)
+data class FormatterSymbols(val grouping: String, val fractional: String, val indian: Boolean)

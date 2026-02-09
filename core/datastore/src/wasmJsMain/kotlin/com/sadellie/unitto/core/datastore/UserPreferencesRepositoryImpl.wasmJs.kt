@@ -139,10 +139,15 @@ class UserPreferencesRepositoryImpl : UserPreferencesRepository {
   override suspend fun updateDigitsPrecision(precision: Int) =
     updateData(PrefKeys.DIGITS_PRECISION_PREF_KEY, precision)
 
-  override suspend fun updateFormatterSymbols(grouping: String, fractional: String) {
+  override suspend fun updateFormatterSymbols(
+    grouping: String,
+    fractional: String,
+    indian: Boolean,
+  ) {
     if (grouping == fractional) return
     updateData(PrefKeys.FORMATTER_GROUPING_PREF_KEY, grouping)
     updateData(PrefKeys.FORMATTER_FRACTIONAL_PREF_KEY, fractional)
+    updateData(PrefKeys.FORMATTER_INDIAN_PREF_KEY, indian)
   }
 
   override suspend fun updateOutputFormat(outputFormat: Int) =
@@ -280,12 +285,17 @@ class UserPreferencesRepositoryImpl : UserPreferencesRepository {
     this.getTyped<Boolean>(PrefKeys.RADIAN_MODE_PREF_KEY) ?: Defaults.radianMode
 
   private fun Preferences.getFormatterSymbols(): FormatterSymbols {
-    val grouping = this.getTyped<String>(PrefKeys.FORMATTER_GROUPING_PREF_KEY)
-    val fractional = this.getTyped<String>(PrefKeys.FORMATTER_FRACTIONAL_PREF_KEY)
+    var grouping = this.getTyped<String>(PrefKeys.FORMATTER_GROUPING_PREF_KEY)
+    var fractional = this.getTyped<String>(PrefKeys.FORMATTER_FRACTIONAL_PREF_KEY)
     if (grouping == null || fractional == null) {
-      return Defaults.formatterSymbols
+      // formatter symbols must fallback together
+      val defaultFormatterSymbols = Defaults.formatterSymbols
+      grouping = defaultFormatterSymbols.grouping
+      fractional = defaultFormatterSymbols.fractional
     }
-    return FormatterSymbols(grouping, fractional)
+    val indian =
+      this.getTyped<Boolean>(PrefKeys.FORMATTER_INDIAN_PREF_KEY) ?: Defaults.formatterSymbols.indian
+    return FormatterSymbols(grouping, fractional, indian)
   }
 
   private fun Preferences.getMiddleZero() =

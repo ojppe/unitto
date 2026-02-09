@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2024-2025 Elshan Agaev
+ * Copyright (c) 2024-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -247,7 +247,7 @@ fun PreviewBodyMassScreen() {
         weight = remember { TextFieldState() },
         normalWeightRange = KBigDecimal(30.0) to KBigDecimal(50.0),
         result = KBigDecimal(18.5),
-        formatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD),
+        formatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD, false),
       ),
     updateIsMetric = {},
     openDrawer = {},

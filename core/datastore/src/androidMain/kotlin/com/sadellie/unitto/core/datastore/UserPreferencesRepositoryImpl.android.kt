@@ -147,13 +147,18 @@ class UserPreferencesRepositoryImpl(private val dataStore: DataStore<Preferences
     dataStore.edit { preferences -> preferences[DatastorePrefKeys.DIGITS_PRECISION] = precision }
   }
 
-  override suspend fun updateFormatterSymbols(grouping: String, fractional: String) {
+  override suspend fun updateFormatterSymbols(
+    grouping: String,
+    fractional: String,
+    indian: Boolean,
+  ) {
     // Grouping and fractional symbols are always different
     if (grouping == fractional) return
 
     dataStore.edit { preferences ->
       preferences[DatastorePrefKeys.FORMATTER_GROUPING] = grouping
       preferences[DatastorePrefKeys.FORMATTER_FRACTIONAL] = fractional
+      preferences[DatastorePrefKeys.FORMATTER_INDIAN] = indian
     }
   }
 
@@ -336,12 +341,16 @@ class UserPreferencesRepositoryImpl(private val dataStore: DataStore<Preferences
     this[DatastorePrefKeys.RADIAN_MODE] ?: Defaults.radianMode
 
   private fun Preferences.getFormatterSymbols(): FormatterSymbols {
-    val grouping = this[DatastorePrefKeys.FORMATTER_GROUPING]
-    val fractional = this[DatastorePrefKeys.FORMATTER_FRACTIONAL]
+    var grouping = this[DatastorePrefKeys.FORMATTER_GROUPING]
+    var fractional = this[DatastorePrefKeys.FORMATTER_FRACTIONAL]
     if (grouping == null || fractional == null) {
-      return Defaults.formatterSymbols
+      // formatter symbols must fallback together
+      val defaultFormatterSymbols = Defaults.formatterSymbols
+      grouping = defaultFormatterSymbols.grouping
+      fractional = defaultFormatterSymbols.fractional
     }
-    return FormatterSymbols(grouping, fractional)
+    val indian = this[DatastorePrefKeys.FORMATTER_INDIAN] ?: Defaults.formatterSymbols.indian
+    return FormatterSymbols(grouping, fractional, indian)
   }
 
   private fun Preferences.getMiddleZero() =

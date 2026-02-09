@@ -44,7 +44,7 @@ SHA-256 digest: b2d9938c97fa77df78142c311d234aae9e706f10ccba167f2a2a3e33528c1dcf
 ## 🤖 Custom ROM developers
 Leave.
 
-## 🌐 State of Unitto Web
+## 🌐 State of Unitto Web (Alpha)
 - Main features are on par with Android version (including accuracy of calculations)
 - Physical keyboard support is implemented
 - User interface adapts to bigger screens

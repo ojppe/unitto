@@ -21,12 +21,15 @@ Not used explicitly. Added automatically by Widget feature.
 Not used explicitly. Added automatically by Widget feature.
 
 ## Network service
-
 By default the app uses [Free Currency Exchange Rates API](https://github.com/fawazahmed0/exchange-api) by [fawazahmed0](https://github.com/fawazahmed0).
 Requests are send to `cdn.jsdelivr.net`.
 
 ### Alternative service
 
+#### Alternative A
+Same rates, but hosted by Cloudflare: https://latest.currency-api.pages.dev
+
+#### Alternative B
 You can run your own service that relies on [lineofflight/frankfurter](github.com/lineofflight/frankfurter). Both services can be self-hosted: this and `frankfurter` (by default a public instance of `frankfurter` is used)
 
 1. Navigate to [alternative](./alternative)

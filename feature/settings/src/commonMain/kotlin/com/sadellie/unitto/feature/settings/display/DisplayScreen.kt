@@ -159,116 +159,43 @@ private fun DisplayScreen(
           .padding(horizontal = Sizes.large),
       verticalArrangement = ListItemExpressiveDefaults.ListArrangement,
     ) {
-      val isColorSelectedEnabled =
-        remember(controller.isDynamicThemeEnabled) { !controller.isDynamicThemeEnabled }
-      val isStyleSelectorEnabled =
-        remember(controller.isDynamicThemeEnabled, controller.currentCustomColor) {
-          (!controller.isDynamicThemeEnabled) and
-            (controller.currentCustomColor != Color.Unspecified)
-        }
-
-      ListItemExpressive(
-        shape = ListItemExpressiveDefaults.firstShape,
-        leadingContent = { Icon(Symbols.Palette, stringResource(Res.string.settings_color_theme)) },
-        headlineContent = { Text(stringResource(Res.string.settings_color_theme)) },
-        supportingContent = { Text(stringResource(Res.string.settings_color_theme_support)) },
-        secondaryContent = {
-          ThemingModeSelector(
-            modifier = Modifier.fillMaxWidth(),
-            onThemeChange = onThemeChange,
-            currentThemingMode = controller.currentThemingMode,
-          )
-        },
+      ThemingModeSelector(
+        onThemeChange = onThemeChange,
+        currentThemingMode = controller.currentThemingMode,
       )
 
+      AmoledSelector(
+        currentThemingMode = controller.currentThemingMode,
+        onAmoledThemeChange = onAmoledThemeChange,
+        isAmoledThemeEnabled = controller.isAmoledThemeEnabled,
+      )
       val isDynamicThemingSupported = isDynamicThemingSupported()
-      AnimatedVisibility(
-        visible = controller.currentThemingMode != ThemingMode.FORCE_LIGHT,
-        enter = expandVertically() + fadeIn(),
-        exit = shrinkVertically() + fadeOut(),
-      ) {
-        ListItemExpressive(
-          icon = Symbols.DarkModeFill,
-          headlineText = stringResource(Res.string.settings_amoled_dark),
-          supportingText = stringResource(Res.string.settings_amoled_dark_support),
-          switchState = controller.isAmoledThemeEnabled,
-          onSwitchChange = onAmoledThemeChange,
-          shape =
-            if (isDynamicThemingSupported) ListItemExpressiveDefaults.middleShape
-            else ListItemExpressiveDefaults.lastShape,
-        )
-      }
-
+      val isColorSelectorEnabled =
+        remember(controller.isDynamicThemeEnabled) { !controller.isDynamicThemeEnabled }
       if (isDynamicThemingSupported) {
-        val dynamicColorListItemShape =
-          remember(isColorSelectedEnabled) {
-            if (isColorSelectedEnabled) ListItemExpressiveDefaults.middleShape
-            else ListItemExpressiveDefaults.lastShape
-          }
-        ListItemExpressive(
-          icon = Symbols.Colorize,
-          headlineText = stringResource(Res.string.settings_dynamic_colors),
-          supportingText = stringResource(Res.string.settings_dynamic_colors_support),
-          switchState = controller.isDynamicThemeEnabled,
-          onSwitchChange = onDynamicThemeChange,
-          shape = dynamicColorListItemShape,
+        DynamicThemingSelector(
+          isColorSelectorEnabled = isColorSelectorEnabled,
+          onDynamicThemeChange = onDynamicThemeChange,
+          isDynamicThemeEnabled = controller.isDynamicThemeEnabled,
         )
-
-        AnimatedVisibility(
-          visible = isColorSelectedEnabled,
-          enter = expandVertically() + fadeIn(),
-          exit = shrinkVertically() + fadeOut(),
-        ) {
-          val shape =
-            remember(isStyleSelectorEnabled) {
-              if (isStyleSelectorEnabled) ListItemExpressiveDefaults.middleShape
-              else ListItemExpressiveDefaults.lastShape
-            }
-          ListItemExpressive(
-            shape = shape,
-            leadingContent = { Spacer(Modifier.size(24.dp)) }, // empty icon spacing
-            headlineContent = { Text(stringResource(Res.string.settings_selected_color)) },
-            secondaryContentPadding = PaddingValues(0.dp),
-            secondaryContent = {
-              ColorSelector(
-                modifier = Modifier.fillMaxWidth(),
-                contentPadding =
-                  PaddingValues(start = 56.dp, end = Sizes.large, bottom = Sizes.small),
-                currentColor =
-                  // Disable custom color and use brand color scheme
-                  if (controller.currentCustomColor == Color.Unspecified) brandColor
-                  else controller.currentCustomColor,
-                onColorClick = { onColorChange(if (it == brandColor) Color.Unspecified else it) },
-                colors = colorSchemes,
-              )
-            },
-          )
-        }
-
-        AnimatedVisibility(
-          visible = isStyleSelectorEnabled,
-          enter = expandVertically() + fadeIn(),
-          exit = shrinkVertically() + fadeOut(),
-        ) {
-          ListItemExpressive(
-            shape = ListItemExpressiveDefaults.lastShape,
-            leadingContent = { Spacer(Modifier.size(24.dp)) }, // empty icon spacing
-            headlineContent = { Text(stringResource(Res.string.settings_selected_style)) },
-            secondaryContentPadding = PaddingValues(0.dp),
-            secondaryContent = {
-              MonetModeSelector(
-                modifier = Modifier.fillMaxWidth(),
-                selected = controller.currentMonetMode,
-                onItemClick = onMonetModeChange,
-                customColor = controller.currentCustomColor,
-                themingMode = controller.currentThemingMode,
-                paddingValues =
-                  PaddingValues(start = 56.dp, end = Sizes.large, bottom = Sizes.small),
-              )
-            },
-          )
-        }
       }
+      val isStyleSelectorEnabled =
+        remember(isColorSelectorEnabled, controller.currentCustomColor) {
+          isColorSelectorEnabled and (controller.currentCustomColor != Color.Unspecified)
+        }
+      ColorSelector(
+        isColorSelectorEnabled = isColorSelectorEnabled,
+        isStyleSelectorEnabled = isStyleSelectorEnabled,
+        onColorChange = onColorChange,
+        currentCustomColor = controller.currentCustomColor,
+      )
+      StyleSelector(
+        isStyleSelectorEnabled = isStyleSelectorEnabled,
+        onMonetModeChange = onMonetModeChange,
+        currentMonetMode = controller.currentMonetMode,
+        currentCustomColor = controller.currentCustomColor,
+        currentThemingMode = controller.currentThemingMode,
+      )
 
       ListHeader(stringResource(Res.string.settings_additional))
 
@@ -304,32 +231,154 @@ private fun DisplayScreen(
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun ThemingModeSelector(
-  modifier: Modifier,
   onThemeChange: (ThemingMode) -> Unit,
   currentThemingMode: ThemingMode,
 ) {
-  Row(modifier = modifier, horizontalArrangement = Arrangement.spacedBy(Sizes.small)) {
-    ToggleButton(
-      onCheckedChange = { onThemeChange(ThemingMode.AUTO) },
-      checked = ThemingMode.AUTO == currentThemingMode,
-      shapes = ToggleButtonDefaults.shapes(),
-    ) {
-      Text(stringResource(Res.string.settings_auto), maxLines = 1)
+  ListItemExpressive(
+    shape = ListItemExpressiveDefaults.firstShape,
+    leadingContent = { Icon(Symbols.Palette, stringResource(Res.string.settings_color_theme)) },
+    headlineContent = { Text(stringResource(Res.string.settings_color_theme)) },
+    supportingContent = { Text(stringResource(Res.string.settings_color_theme_support)) },
+    secondaryContent = {
+      Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(Sizes.small),
+      ) {
+        ToggleButton(
+          onCheckedChange = { onThemeChange(ThemingMode.AUTO) },
+          checked = ThemingMode.AUTO == currentThemingMode,
+          shapes = ToggleButtonDefaults.shapes(),
+        ) {
+          Text(stringResource(Res.string.settings_auto), maxLines = 1)
+        }
+        ToggleButton(
+          onCheckedChange = { onThemeChange(ThemingMode.FORCE_LIGHT) },
+          checked = ThemingMode.FORCE_LIGHT == currentThemingMode,
+          shapes = ToggleButtonDefaults.shapes(),
+        ) {
+          Text(stringResource(Res.string.settings_light_mode), maxLines = 1)
+        }
+        ToggleButton(
+          onCheckedChange = { onThemeChange(ThemingMode.FORCE_DARK) },
+          checked = ThemingMode.FORCE_DARK == currentThemingMode,
+          shapes = ToggleButtonDefaults.shapes(),
+        ) {
+          Text(stringResource(Res.string.settings_dark_mode), maxLines = 1)
+        }
+      }
+    },
+  )
+}
+
+@Composable
+private fun AmoledSelector(
+  currentThemingMode: ThemingMode,
+  onAmoledThemeChange: (Boolean) -> Unit,
+  isAmoledThemeEnabled: Boolean,
+) {
+  AnimatedVisibility(
+    visible = currentThemingMode != ThemingMode.FORCE_LIGHT,
+    enter = expandVertically() + fadeIn(),
+    exit = shrinkVertically() + fadeOut(),
+  ) {
+    ListItemExpressive(
+      icon = Symbols.DarkModeFill,
+      headlineText = stringResource(Res.string.settings_amoled_dark),
+      supportingText = stringResource(Res.string.settings_amoled_dark_support),
+      switchState = isAmoledThemeEnabled,
+      onSwitchChange = onAmoledThemeChange,
+      shape = ListItemExpressiveDefaults.middleShape,
+    )
+  }
+}
+
+@Composable
+private fun DynamicThemingSelector(
+  isColorSelectorEnabled: Boolean,
+  onDynamicThemeChange: (Boolean) -> Unit,
+  isDynamicThemeEnabled: Boolean,
+) {
+  val dynamicColorListItemShape =
+    remember(isColorSelectorEnabled) {
+      if (isColorSelectorEnabled) ListItemExpressiveDefaults.middleShape
+      else ListItemExpressiveDefaults.lastShape
     }
-    ToggleButton(
-      onCheckedChange = { onThemeChange(ThemingMode.FORCE_LIGHT) },
-      checked = ThemingMode.FORCE_LIGHT == currentThemingMode,
-      shapes = ToggleButtonDefaults.shapes(),
-    ) {
-      Text(stringResource(Res.string.settings_light_mode), maxLines = 1)
-    }
-    ToggleButton(
-      onCheckedChange = { onThemeChange(ThemingMode.FORCE_DARK) },
-      checked = ThemingMode.FORCE_DARK == currentThemingMode,
-      shapes = ToggleButtonDefaults.shapes(),
-    ) {
-      Text(stringResource(Res.string.settings_dark_mode), maxLines = 1)
-    }
+  ListItemExpressive(
+    icon = Symbols.Colorize,
+    headlineText = stringResource(Res.string.settings_dynamic_colors),
+    supportingText = stringResource(Res.string.settings_dynamic_colors_support),
+    switchState = isDynamicThemeEnabled,
+    onSwitchChange = onDynamicThemeChange,
+    shape = dynamicColorListItemShape,
+  )
+}
+
+@Composable
+private fun ColorSelector(
+  isColorSelectorEnabled: Boolean,
+  isStyleSelectorEnabled: Boolean,
+  onColorChange: (Color) -> Unit,
+  currentCustomColor: Color,
+) {
+  AnimatedVisibility(
+    visible = isColorSelectorEnabled,
+    enter = expandVertically() + fadeIn(),
+    exit = shrinkVertically() + fadeOut(),
+  ) {
+    val shape =
+      remember(isStyleSelectorEnabled) {
+        if (isStyleSelectorEnabled) ListItemExpressiveDefaults.middleShape
+        else ListItemExpressiveDefaults.lastShape
+      }
+    ListItemExpressive(
+      shape = shape,
+      leadingContent = { Spacer(Modifier.size(24.dp)) }, // empty icon spacing
+      headlineContent = { Text(stringResource(Res.string.settings_selected_color)) },
+      secondaryContentPadding = PaddingValues(0.dp),
+      secondaryContent = {
+        ColorSelector(
+          modifier = Modifier.fillMaxWidth(),
+          contentPadding = PaddingValues(start = 56.dp, end = Sizes.large, bottom = Sizes.small),
+          currentColor =
+            // Disable custom color and use brand color scheme
+            if (currentCustomColor == Color.Unspecified) brandColor else currentCustomColor,
+          onColorClick = { onColorChange(if (it == brandColor) Color.Unspecified else it) },
+          colors = colorSchemes,
+        )
+      },
+    )
+  }
+}
+
+@Composable
+private fun StyleSelector(
+  isStyleSelectorEnabled: Boolean,
+  onMonetModeChange: (MonetMode) -> Unit,
+  currentMonetMode: MonetMode,
+  currentCustomColor: Color,
+  currentThemingMode: ThemingMode,
+) {
+  AnimatedVisibility(
+    visible = isStyleSelectorEnabled,
+    enter = expandVertically() + fadeIn(),
+    exit = shrinkVertically() + fadeOut(),
+  ) {
+    ListItemExpressive(
+      shape = ListItemExpressiveDefaults.lastShape,
+      leadingContent = { Spacer(Modifier.size(24.dp)) }, // empty icon spacing
+      headlineContent = { Text(stringResource(Res.string.settings_selected_style)) },
+      secondaryContentPadding = PaddingValues(0.dp),
+      secondaryContent = {
+        MonetModeSelector(
+          modifier = Modifier.fillMaxWidth(),
+          selected = currentMonetMode,
+          onItemClick = onMonetModeChange,
+          customColor = currentCustomColor,
+          themingMode = currentThemingMode,
+          paddingValues = PaddingValues(start = 56.dp, end = Sizes.large, bottom = Sizes.small),
+        )
+      },
+    )
   }
 }
 

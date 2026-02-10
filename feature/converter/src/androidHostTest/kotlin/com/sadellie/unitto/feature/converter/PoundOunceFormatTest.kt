@@ -29,7 +29,7 @@ import org.junit.Test
 class PoundOunceFormatTest {
   private val scale = 3
   private val outputFormat = OutputFormat.PLAIN
-  private val formatterSymbols = FormatterSymbols(Token.PERIOD, Token.COMMA)
+  private val formatterSymbols = FormatterSymbols(Token.PERIOD, Token.COMMA, false)
 
   @Test
   fun testNegative() {

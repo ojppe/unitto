@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2024-2025 Elshan Agaev
+ * Copyright (c) 2024-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,12 +22,10 @@ import com.sadellie.unitto.core.database.CalculatorHistoryDao
 import com.sadellie.unitto.core.database.CalculatorHistoryDaoInMemory
 import com.sadellie.unitto.core.database.CalculatorHistoryEntity
 import com.sadellie.unitto.core.model.calculator.CalculatorHistoryItem
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.test.TestScope
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.test.runTest
 
 /**
  * This only verifies correct binding with dao and conversion from [CalculatorHistoryEntity] to
@@ -35,103 +33,98 @@ import kotlin.test.assertEquals
  * [CalculatorHistoryDao].
  */
 class CalculatorHistoryRepositoryImplTest {
-  private val testScope = TestScope(UnconfinedTestDispatcher())
 
   private val calculatorHistoryDao = CalculatorHistoryDaoInMemory()
 
   private val calculatorHistoryRepository = CalculatorHistoryRepositoryImpl(calculatorHistoryDao)
 
   @Test
-  fun historyFlow_returnCorrectItems() =
-    testScope.runTest {
-      // insert some entries
-      val entries =
-        listOf(
-          CalculatorHistoryEntity(0, 0, "expression 0", "result 0"),
-          CalculatorHistoryEntity(1, 1, "expression 1", "result 1"),
-          CalculatorHistoryEntity(2, 2, "expression 2", "result 2"),
-        )
-      entries.forEach { calculatorHistoryDao.insert(it) }
+  fun historyFlow_returnCorrectItems() = runTest {
+    // insert some entries
+    val entries =
+      listOf(
+        CalculatorHistoryEntity(0, 0, "expression 0", "result 0"),
+        CalculatorHistoryEntity(1, 1, "expression 1", "result 1"),
+        CalculatorHistoryEntity(2, 2, "expression 2", "result 2"),
+      )
+    entries.forEach { calculatorHistoryDao.insert(it) }
 
-      // get back same data but converted and in right order
-      val expected =
-        listOf(
-          CalculatorHistoryItem(2, "expression 2", "result 2"),
-          CalculatorHistoryItem(1, "expression 1", "result 1"),
-          CalculatorHistoryItem(0, "expression 0", "result 0"),
-        )
-      val actual = calculatorHistoryRepository.historyFlow.first()
+    // get back same data but converted and in right order
+    val expected =
+      listOf(
+        CalculatorHistoryItem(2, "expression 2", "result 2"),
+        CalculatorHistoryItem(1, "expression 1", "result 1"),
+        CalculatorHistoryItem(0, "expression 0", "result 0"),
+      )
+    val actual = calculatorHistoryRepository.historyFlow.first()
 
-      assertEquals(expected, actual)
-    }
-
-  @Test
-  fun add_addToFlow() =
-    testScope.runTest {
-      // insert some entries
-      val entries =
-        listOf(
-          CalculatorHistoryEntity(0, 0, "expression 0", "result 0"),
-          CalculatorHistoryEntity(1, 1, "expression 1", "result 1"),
-          CalculatorHistoryEntity(2, 2, "expression 2", "result 2"),
-        )
-      entries.forEach { calculatorHistoryDao.insert(it) }
-
-      // add one
-      calculatorHistoryRepository.add("expression 3", "result 3")
-
-      // descending list, latest added item is first
-      val actual = calculatorHistoryRepository.historyFlow.first().first()
-      // timestamp is handled internally and not exposed, can't compare entire item
-      assertEquals("expression 3", actual.expression)
-      assertEquals("result 3", actual.result)
-    }
+    assertEquals(expected, actual)
+  }
 
   @Test
-  fun delete_removesFromFlow() =
-    testScope.runTest {
-      // insert some entries
-      val entries =
-        listOf(
-          CalculatorHistoryEntity(0, 0, "expression 0", "result 0"),
-          CalculatorHistoryEntity(1, 1, "expression 1", "result 1"),
-          CalculatorHistoryEntity(2, 2, "expression 2", "result 2"),
-        )
-      entries.forEach { calculatorHistoryDao.insert(it) }
+  fun add_addToFlow() = runTest {
+    // insert some entries
+    val entries =
+      listOf(
+        CalculatorHistoryEntity(0, 0, "expression 0", "result 0"),
+        CalculatorHistoryEntity(1, 1, "expression 1", "result 1"),
+        CalculatorHistoryEntity(2, 2, "expression 2", "result 2"),
+      )
+    entries.forEach { calculatorHistoryDao.insert(it) }
 
-      // remove one
-      calculatorHistoryRepository.delete(1)
+    // add one
+    calculatorHistoryRepository.add("expression 3", "result 3")
 
-      // make sure it is removed and other entries are in place
-      val expected =
-        listOf(
-          CalculatorHistoryItem(2, "expression 2", "result 2"),
-          CalculatorHistoryItem(0, "expression 0", "result 0"),
-        )
-      val actual = calculatorHistoryRepository.historyFlow.first()
-
-      assertEquals(expected, actual)
-    }
+    // descending list, latest added item is first
+    val actual = calculatorHistoryRepository.historyFlow.first().first()
+    // timestamp is handled internally and not exposed, can't compare entire item
+    assertEquals("expression 3", actual.expression)
+    assertEquals("result 3", actual.result)
+  }
 
   @Test
-  fun clear_emptyFlow() =
-    testScope.runTest {
-      // insert some entries
-      val entries =
-        listOf(
-          CalculatorHistoryEntity(0, 0, "expression 0", "result 0"),
-          CalculatorHistoryEntity(1, 1, "expression 1", "result 1"),
-          CalculatorHistoryEntity(2, 2, "expression 2", "result 2"),
-        )
-      entries.forEach { calculatorHistoryDao.insert(it) }
+  fun delete_removesFromFlow() = runTest {
+    // insert some entries
+    val entries =
+      listOf(
+        CalculatorHistoryEntity(0, 0, "expression 0", "result 0"),
+        CalculatorHistoryEntity(1, 1, "expression 1", "result 1"),
+        CalculatorHistoryEntity(2, 2, "expression 2", "result 2"),
+      )
+    entries.forEach { calculatorHistoryDao.insert(it) }
 
-      // clear database
-      calculatorHistoryRepository.clear()
+    // remove one
+    calculatorHistoryRepository.delete(1)
 
-      // make sure flow is empty
-      val expected = emptyList<CalculatorHistoryItem>()
-      val actual = calculatorHistoryRepository.historyFlow.first()
+    // make sure it is removed and other entries are in place
+    val expected =
+      listOf(
+        CalculatorHistoryItem(2, "expression 2", "result 2"),
+        CalculatorHistoryItem(0, "expression 0", "result 0"),
+      )
+    val actual = calculatorHistoryRepository.historyFlow.first()
 
-      assertEquals(expected, actual)
-    }
+    assertEquals(expected, actual)
+  }
+
+  @Test
+  fun clear_emptyFlow() = runTest {
+    // insert some entries
+    val entries =
+      listOf(
+        CalculatorHistoryEntity(0, 0, "expression 0", "result 0"),
+        CalculatorHistoryEntity(1, 1, "expression 1", "result 1"),
+        CalculatorHistoryEntity(2, 2, "expression 2", "result 2"),
+      )
+    entries.forEach { calculatorHistoryDao.insert(it) }
+
+    // clear database
+    calculatorHistoryRepository.clear()
+
+    // make sure flow is empty
+    val expected = emptyList<CalculatorHistoryItem>()
+    val actual = calculatorHistoryRepository.historyFlow.first()
+
+    assertEquals(expected, actual)
+  }
 }

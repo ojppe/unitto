@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2024-2025 Elshan Agaev
+ * Copyright (c) 2024-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -179,21 +179,21 @@ class FormatterExpressionTest {
   ) {
     assertEquals(
       spaceAndPeriod,
-      unformatted.formatExpression(FormatterSymbols(Token.SPACE, Token.PERIOD)),
+      unformatted.formatExpression(FormatterSymbols(Token.SPACE, Token.PERIOD, false)),
     )
     assertEquals(
       commaAndPeriod,
-      unformatted.formatExpression(FormatterSymbols(Token.COMMA, Token.PERIOD)),
+      unformatted.formatExpression(FormatterSymbols(Token.COMMA, Token.PERIOD, false)),
     )
     assertOutputTransformation(
       outputTransformation =
-        ExpressionOutputTransformation(FormatterSymbols(Token.COMMA, Token.PERIOD)),
+        ExpressionOutputTransformation(FormatterSymbols(Token.COMMA, Token.PERIOD, false)),
       expected = "[]$commaAndPeriod", // set fake cursor at start as it is not tested here
       input = "[]$unformatted",
     )
     assertEquals(
       periodAndComma,
-      unformatted.formatExpression(FormatterSymbols(Token.PERIOD, Token.COMMA)),
+      unformatted.formatExpression(FormatterSymbols(Token.PERIOD, Token.COMMA, false)),
     )
   }
 }

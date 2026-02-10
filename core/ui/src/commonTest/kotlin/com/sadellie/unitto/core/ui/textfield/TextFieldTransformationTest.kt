@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2024-2025 Elshan Agaev
+ * Copyright (c) 2024-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@ class TextFieldTransformationTest {
   @Test
   fun expressionInputTransformation_test() {
     // 123.456,789
-    val fs = FormatterSymbols(Token.PERIOD, Token.COMMA)
+    val fs = FormatterSymbols(Token.PERIOD, Token.COMMA, false)
     val inputTransformation = ExpressionInputTransformation(fs)
 
     fun transformAndCompare(expected: String, input: String) =
@@ -61,7 +61,7 @@ class TextFieldTransformationTest {
 
   @Test
   fun expressionOutputTransformation_test() {
-    val fs = FormatterSymbols(Token.PERIOD, Token.COMMA)
+    val fs = FormatterSymbols(Token.PERIOD, Token.COMMA, false)
     val outputTransformation = ExpressionOutputTransformation(fs)
     fun transformAndCompare(expected: String, input: String) =
       assertOutputTransformation(outputTransformation, expected, input)

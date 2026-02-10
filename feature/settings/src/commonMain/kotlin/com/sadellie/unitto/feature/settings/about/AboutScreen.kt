@@ -241,18 +241,23 @@ private fun AuthorBlock(onClick: () -> Unit, modifier: Modifier) {
           Modifier.rotate(rotation.value)
             .padding(8.dp)
             .clip(backgroundShape.toShape())
-            .background(Brush.verticalGradient(listOf(Color(0xFF3E0077), Color(0xFF2B002B))))
+            .background(Brush.verticalGradient(listOf(Color(BG_TOP), Color(BG_BOTTOM))))
             .size(36.dp)
       )
       Box(
         modifier =
           Modifier.clip(CircleShape)
-            .background(Brush.verticalGradient(listOf(Color(0xFFD329D1), Color(0xFF30003C))))
+            .background(Brush.verticalGradient(listOf(Color(FG_TOP), Color(FG_BOTTOM))))
             .size(18.dp)
       )
     }
   }
 }
+
+private const val BG_TOP = 0xFF3E0077
+private const val BG_BOTTOM = 0xFF2B002B
+private const val FG_TOP = 0xFFD329D1
+private const val FG_BOTTOM = 0xFF30003C
 
 @Preview
 @Composable

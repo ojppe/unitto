@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2025 Elshan Agaev
+ * Copyright (c) 2025-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,11 +18,13 @@
 
 package com.sadellie.unitto.feature.calculator
 
+import com.sadellie.unitto.core.data.calculatorDataModule
 import com.sadellie.unitto.feature.calculator.navigation.calculatorNavigation
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 val calculatorModule = module {
+  includes(calculatorDataModule)
   calculatorNavigation()
   viewModelOf(::CalculatorViewModel)
 }

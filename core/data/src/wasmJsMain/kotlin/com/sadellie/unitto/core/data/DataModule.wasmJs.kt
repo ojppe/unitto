@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2025 Elshan Agaev
+ * Copyright (c) 2025-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,12 +23,11 @@ import com.sadellie.unitto.core.data.calculator.CalculatorHistoryRepositoryImpl
 import com.sadellie.unitto.core.data.converter.UnitConverterRepository
 import com.sadellie.unitto.core.data.converter.UnitConverterRepositoryImpl
 import com.sadellie.unitto.core.data.converter.UnitsRepository
+import com.sadellie.unitto.core.remote.currencyApiModule
 import org.koin.dsl.module
 
-val dataModule = module {
-  factory<CalculatorHistoryRepository> {
-    CalculatorHistoryRepositoryImpl(calculatorHistoryDao = get())
-  }
+val converterDataModule = module {
+  includes(currencyApiModule)
   factory<UnitsRepository> { UnitsRepository(unitsDao = get()) }
   factory<UnitConverterRepository> {
     UnitConverterRepositoryImpl(
@@ -36,5 +35,11 @@ val dataModule = module {
       currencyRatesDao = get(),
       currencyApiService = get(),
     )
+  }
+}
+
+val calculatorDataModule = module {
+  factory<CalculatorHistoryRepository> {
+    CalculatorHistoryRepositoryImpl(calculatorHistoryDao = get())
   }
 }

@@ -38,7 +38,6 @@ import androidx.compose.ui.window.ComposeViewport
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.savedstate.serialization.SavedStateConfiguration
-import com.sadellie.unitto.core.data.dataModule
 import com.sadellie.unitto.core.database.unittoDatabaseModule
 import com.sadellie.unitto.core.datastore.AppPreferences
 import com.sadellie.unitto.core.datastore.dataStoreModule
@@ -47,7 +46,6 @@ import com.sadellie.unitto.core.designsystem.theme.LocalNumberTypography
 import com.sadellie.unitto.core.designsystem.theme.numberTypographyUnitto
 import com.sadellie.unitto.core.navigation.CalculatorStartRoute
 import com.sadellie.unitto.core.navigation.ConverterStartRoute
-import com.sadellie.unitto.core.remote.currencyApiModule
 import com.sadellie.unitto.feature.bodymass.bodyMassModule
 import com.sadellie.unitto.feature.calculator.calculatorModule
 import com.sadellie.unitto.feature.converter.converterModule
@@ -132,8 +130,6 @@ private fun initKoin() {
     modules(
       unittoDatabaseModule,
       dataStoreModule,
-      dataModule,
-      currencyApiModule,
       calculatorModule,
       converterModule,
       bodyMassModule,

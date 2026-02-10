@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2025 Elshan Agaev
+ * Copyright (c) 2023-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,14 +30,13 @@ import com.sadellie.unitto.core.data.timezone.TimeZonesRepository
 import com.sadellie.unitto.core.data.timezone.TimeZonesRepositoryImpl
 import com.sadellie.unitto.core.model.timezone.FavoriteZone
 import com.sadellie.unitto.core.model.timezone.SearchResultZone
+import com.sadellie.unitto.core.remote.currencyApiModule
 import kotlinx.coroutines.flow.emptyFlow
+import org.koin.core.module.includes
 import org.koin.dsl.lazyModule
 
-val dataModule = lazyModule {
-  factory<CalculatorHistoryRepository> {
-    CalculatorHistoryRepositoryImpl(calculatorHistoryDao = get())
-  }
-
+val converterDataModule = lazyModule {
+  includes(currencyApiModule)
   factory<UnitsRepository> { UnitsRepository(unitsDao = get()) }
 
   factory<UnitConverterRepository> {
@@ -47,7 +46,15 @@ val dataModule = lazyModule {
       currencyApiService = get(),
     )
   }
+}
 
+val calculatorDataModule = lazyModule {
+  factory<CalculatorHistoryRepository> {
+    CalculatorHistoryRepositoryImpl(calculatorHistoryDao = get())
+  }
+}
+
+val timeZonesDataModule = lazyModule {
   single<TimeZonesRepository> {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
       TimeZonesRepositoryImpl(dao = get())

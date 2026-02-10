@@ -18,11 +18,13 @@
 
 package com.sadellie.unitto.feature.converter
 
+import com.sadellie.unitto.core.data.converterDataModule
 import com.sadellie.unitto.feature.converter.navigation.converterNavigation
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 val converterModule = module {
+  includes(converterDataModule)
   converterNavigation()
   viewModelOf(::ConverterViewModel)
   viewModelOf(::UnitFromSelectorViewModel)

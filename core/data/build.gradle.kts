@@ -27,7 +27,6 @@ kotlin {
   sourceSets.commonMain.dependencies {
     implementation(project(":core:model"))
     implementation(project(":core:common"))
-    implementation(project(":core:themmo"))
     implementation(project(":core:evaluatto"))
     implementation(project(":core:database"))
     implementation(project(":core:remote"))

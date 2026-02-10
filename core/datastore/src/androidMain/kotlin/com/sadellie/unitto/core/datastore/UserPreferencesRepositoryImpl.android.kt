@@ -87,16 +87,15 @@ class UserPreferencesRepositoryImpl(private val dataStore: DataStore<Preferences
       ConverterPreferences(
         formatterSymbols = preferences.getFormatterSymbols(),
         middleZero = preferences.getMiddleZero(),
+        acButton = preferences.getAcButton(),
         precision = preferences.getDigitsPrecision(),
         outputFormat = preferences.getOutputFormat(),
-        unitConverterFormatTime = preferences.getUnitConverterFormatTime(),
-        unitConverterSorting = preferences.getUnitConverterSorting(),
+        formatTime = preferences.getUnitConverterFormatTime(),
+        sorting = preferences.getUnitConverterSorting(),
         shownUnitGroups = preferences.getShownUnitGroups(),
-        unitConverterFavoritesOnly = preferences.getUnitConverterFavoritesOnly(),
-        enableToolsExperiment = preferences.getEnableToolsExperiment(),
+        favoritesOnly = preferences.getUnitConverterFavoritesOnly(),
         latestLeftSideUnit = preferences.getLatestLeftSide(),
         latestRightSideUnit = preferences.getLatestRightSide(),
-        acButton = preferences.getAcButton(),
         customApiUrl = preferences.getCustomApiUrl(),
       )
     }

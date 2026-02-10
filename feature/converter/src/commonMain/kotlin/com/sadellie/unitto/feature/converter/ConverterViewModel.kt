@@ -96,7 +96,7 @@ internal class ConverterViewModel(
             formatterSymbols = prefs.formatterSymbols,
             scale = prefs.precision,
             outputFormat = OutputFormat.PLAIN,
-            formatTime = prefs.unitConverterFormatTime,
+            formatTime = prefs.formatTime,
             currencyRateUpdateState = currencyRateUpdateState,
             acButton = prefs.acButton,
           )
@@ -199,7 +199,7 @@ internal class ConverterViewModel(
               unitToId = unitToIdValue ?: return@launch,
               value1 = input1Value,
               value2 = input2Value,
-              formatTime = prefs.unitConverterFormatTime,
+              formatTime = prefs.formatTime,
               apiUrl = prefs.customApiUrl,
             )
           } catch (e: ExpressionException) {

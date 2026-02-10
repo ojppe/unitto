@@ -122,7 +122,7 @@ private fun ConverterSettingsScreen(
           UnitListSortingSetting(
             modifier = Modifier.fillMaxWidth(),
             onUpdate = updateUnitConverterSorting,
-            currentSorting = prefs.unitConverterSorting,
+            currentSorting = prefs.sorting,
           )
         },
       )
@@ -130,7 +130,7 @@ private fun ConverterSettingsScreen(
         icon = Symbols.Timer,
         headlineText = stringResource(Res.string.settings_format_time),
         supportingText = stringResource(Res.string.settings_format_time_support),
-        switchState = prefs.unitConverterFormatTime,
+        switchState = prefs.formatTime,
         onSwitchChange = updateUnitConverterFormatTime,
         shape = ListItemExpressiveDefaults.lastShape,
       )
@@ -184,16 +184,15 @@ private fun PreviewConverterSettingsScreen() =
         ConverterPreferences(
           formatterSymbols = FormatterSymbols(Token.SPACE, Token.PERIOD, false),
           middleZero = false,
+          acButton = true,
           precision = 3,
           outputFormat = OutputFormat.PLAIN,
-          unitConverterFormatTime = false,
-          unitConverterSorting = UnitsListSorting.USAGE,
+          formatTime = false,
+          sorting = UnitsListSorting.USAGE,
           shownUnitGroups = UnitGroup.entries,
-          unitConverterFavoritesOnly = false,
-          enableToolsExperiment = false,
+          favoritesOnly = false,
           latestLeftSideUnit = "kilometer",
           latestRightSideUnit = "mile",
-          acButton = true,
           customApiUrl = "",
         ),
       navigateUpAction = {},

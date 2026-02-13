@@ -28,4 +28,4 @@ Time converter
 Body mass index
 • Get instant and accurate results
 
-Permissions and Data? Visit: https://github.com/sadellie/unitto/blob/master/SECURITY.md
+Permissions and Data? Visit: https://github.com/sadellie/unitto/security/

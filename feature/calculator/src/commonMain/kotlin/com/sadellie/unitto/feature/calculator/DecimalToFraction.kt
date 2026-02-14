@@ -1,6 +1,6 @@
 /*
  * Unitto is a calculator for Android
- * Copyright (c) 2023-2025 Elshan Agaev
+ * Copyright (c) 2023-2026 Elshan Agaev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,43 +22,39 @@ import com.sadellie.unitto.core.common.KBigDecimal
 import com.sadellie.unitto.core.common.KBigInteger
 import com.sadellie.unitto.core.common.KRoundingMode
 import com.sadellie.unitto.core.common.isEqualTo
+import kotlin.math.min
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 /**
  * Tries to convert [KBigDecimal] into fractional string.
+ * - 0.5 -> `1⁄2`
+ * - 123.5 -> `123 1⁄2`
+ * - 123 -> `Empty string`
  *
- * 0.5 -> `1⁄2`
- *
- * 123.5 -> `123 1⁄2`
- *
- * 123 -> `Empty string`
- *
- * @return
- * @receiver [KBigDecimal]. Scale doesn't matter, but should be `MAX_SCALE`
+ * @return String with fractional or empty string if fractional output is impossible for [this].
+ * @receiver [KBigDecimal]. Scale doesn't matter, will be rescaled to [FRACTIONAL_ACCURACY] for
+ *   performance.
+ * @author
+ *   https://www.khanacademy.org/math/cc-eighth-grade-math/cc-8th-numbers-operations/cc-8th-repeating-decimals/v/coverting-repeating-decimals-to-fractions-1
+ * @author
+ *   https://www.khanacademy.org/math/cc-eighth-grade-math/cc-8th-numbers-operations/cc-8th-repeating-decimals/v/coverting-repeating-decimals-to-fractions-2
  */
 suspend fun KBigDecimal.toFractionalString(): String =
   withContext(Dispatchers.Default) {
-    // https://www.khanacademy.org/math/cc-eighth-grade-math/cc-8th-numbers-operations/cc-8th-repeating-decimals/v/coverting-repeating-decimals-to-fractions-1
-    // https://www.khanacademy.org/math/cc-eighth-grade-math/cc-8th-numbers-operations/cc-8th-repeating-decimals/v/coverting-repeating-decimals-to-fractions-2
-    val (integral, fractional) = this@toFractionalString.divideAndRemainder(KBigDecimal.ONE)
+    val scaledDownInput = setScale(min(scale(), FRACTIONAL_ACCURACY), KRoundingMode.DOWN)
+    val (integral, fractional) = scaledDownInput.divideAndRemainder(KBigDecimal.ONE)
     val integralBI = integral.toBigInteger()
-
     if (fractional.isEqualTo(KBigDecimal.ZERO)) return@withContext ""
-
     val res: String = if (integral.isEqualTo(KBigDecimal.ZERO)) "" else "$integralBI "
-
     val repeatingDecimals = fractional.repeatingDecimals()
-
     val (finalNumerator, finalDenominator) =
       if (repeatingDecimals == null) {
         fractional.notRepeatingFractional()
       } else {
         fractional.repeatingFractional(repeatingDecimals.length)
       }
-
     if (finalDenominator > maxDenominator) return@withContext ""
-
     return@withContext "$res$finalNumerator⁄$finalDenominator"
   }
 
@@ -96,7 +92,7 @@ private fun KBigDecimal.repeatingFractional(repeatingLength: Int): Pair<KBigInte
   return finalNumerator to finalDenominator
 }
 
-fun KBigDecimal.repeatingDecimals(): String? {
+private fun KBigDecimal.repeatingDecimals(): String? {
   // turn 0.123454545 into 123454545
   val inputString = scaleByPowerOfTen(scale()).toBigInteger().toString()
 
@@ -129,3 +125,7 @@ fun KBigDecimal.repeatingDecimals(): String? {
 }
 
 private val maxDenominator by lazy { KBigInteger("1000000000") }
+/**
+ * High values make algorithm expensive, low values increase chances of missing repeating decimals.
+ */
+private const val FRACTIONAL_ACCURACY = 30

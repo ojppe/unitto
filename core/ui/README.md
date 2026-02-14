@@ -19,27 +19,25 @@ graph LR
     :core:designsystem["designsystem"]
   end
   subgraph :feature
-    :feature:converter["converter"]
     :feature:settings["settings"]
-    :feature:datecalculator["datecalculator"]
-    :feature:timezone["timezone"]
-    :feature:glance["glance"]
-    :feature:graphing["graphing"]
     :feature:bodymass["bodymass"]
     :feature:calculator["calculator"]
+    :feature:converter["converter"]
+    :feature:timezone["timezone"]
+    :feature:datecalculator["datecalculator"]
+    :feature:glance["glance"]
   end
-  :feature:converter --> :core:ui
   :feature:settings --> :core:ui
-  :app --> :core:ui
-  :feature:datecalculator --> :core:ui
+  :sharedApp --> :core:ui
+  :feature:bodymass --> :core:ui
+  :feature:calculator --> :core:ui
+  :feature:converter --> :core:ui
   :feature:timezone --> :core:ui
+  :feature:datecalculator --> :core:ui
   :core:ui --> :core:common
   :core:ui --> :core:navigation
   :core:ui --> :core:designsystem
   :feature:glance --> :core:ui
-  :feature:graphing --> :core:ui
-  :feature:bodymass --> :core:ui
-  :feature:calculator --> :core:ui
 
 classDef focus fill:#769566,stroke:#fff,stroke-width:2px,color:#fff;
 class :core:ui focus

@@ -13,21 +13,29 @@ Calculator tool. Main feature.
 
 graph LR
   subgraph :core
+    :core:designsystem["designsystem"]
     :core:common["common"]
+    :core:model["model"]
     :core:ui["ui"]
     :core:navigation["navigation"]
-    :core:designsystem["designsystem"]
+    :core:evaluatto["evaluatto"]
     :core:datastore["datastore"]
     :core:data["data"]
-    :core:model["model"]
-    :core:evaluatto["evaluatto"]
   end
   subgraph :feature
     :feature:calculator["calculator"]
     :feature:datecalculator["datecalculator"]
   end
-  :app --> :feature:calculator
-  :app --> :feature:datecalculator
+  :sharedApp --> :feature:calculator
+  :sharedApp --> :feature:datecalculator
+  :feature:calculator --> :core:designsystem
+  :feature:calculator --> :core:common
+  :feature:calculator --> :core:model
+  :feature:calculator --> :core:ui
+  :feature:calculator --> :core:navigation
+  :feature:calculator --> :core:evaluatto
+  :feature:calculator --> :core:datastore
+  :feature:calculator --> :core:data
   :feature:datecalculator --> :core:common
   :feature:datecalculator --> :core:ui
   :feature:datecalculator --> :core:navigation
@@ -35,14 +43,6 @@ graph LR
   :feature:datecalculator --> :core:datastore
   :feature:datecalculator --> :core:data
   :feature:datecalculator --> :core:model
-  :feature:calculator --> :core:common
-  :feature:calculator --> :core:ui
-  :feature:calculator --> :core:navigation
-  :feature:calculator --> :core:designsystem
-  :feature:calculator --> :core:datastore
-  :feature:calculator --> :core:evaluatto
-  :feature:calculator --> :core:data
-  :feature:calculator --> :core:model
 
 classDef focus fill:#769566,stroke:#fff,stroke-width:2px,color:#fff;
 class :feature:calculator focus

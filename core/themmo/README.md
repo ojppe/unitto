@@ -14,16 +14,17 @@ Advanced theming controls. ALWAYS test on different Android versions!
 graph LR
   subgraph :core
     :core:themmo["themmo"]
-    :core:data["data"]
     :core:datastore["datastore"]
   end
   subgraph :feature
     :feature:settings["settings"]
+    :feature:glance["glance"]
   end
   :feature:settings --> :core:themmo
-  :app --> :core:themmo
-  :core:data --> :core:themmo
+  :sharedApp --> :core:themmo
+  :androidApp --> :core:themmo
   :core:datastore --> :core:themmo
+  :feature:glance --> :core:themmo
 
 classDef focus fill:#769566,stroke:#fff,stroke-width:2px,color:#fff;
 class :core:themmo focus

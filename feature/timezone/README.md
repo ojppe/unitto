@@ -24,7 +24,7 @@ graph LR
   subgraph :feature
     :feature:timezone["timezone"]
   end
-  :app --> :feature:timezone
+  :sharedApp --> :feature:timezone
   :feature:timezone --> :core:common
   :feature:timezone --> :core:ui
   :feature:timezone --> :core:navigation

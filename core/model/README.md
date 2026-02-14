@@ -14,27 +14,27 @@ Common classes and interfaces that need to be shared between modules (didn't fit
 graph LR
   subgraph :core
     :core:model["model"]
+    :core:datastore["datastore"]
     :core:common["common"]
     :core:data["data"]
-    :core:datastore["datastore"]
   end
   subgraph :feature
-    :feature:converter["converter"]
     :feature:settings["settings"]
-    :feature:datecalculator["datecalculator"]
-    :feature:timezone["timezone"]
-    :feature:graphing["graphing"]
     :feature:calculator["calculator"]
+    :feature:converter["converter"]
+    :feature:timezone["timezone"]
+    :feature:datecalculator["datecalculator"]
+    :feature:glance["glance"]
   end
-  :feature:converter --> :core:model
   :feature:settings --> :core:model
-  :core:model --> :core:common
-  :feature:datecalculator --> :core:model
-  :feature:timezone --> :core:model
-  :core:data --> :core:model
-  :feature:graphing --> :core:model
   :core:datastore --> :core:model
+  :core:model --> :core:common
   :feature:calculator --> :core:model
+  :feature:converter --> :core:model
+  :feature:timezone --> :core:model
+  :feature:datecalculator --> :core:model
+  :core:data --> :core:model
+  :feature:glance --> :core:model
 
 classDef focus fill:#769566,stroke:#fff,stroke-width:2px,color:#fff;
 class :core:model focus

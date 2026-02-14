@@ -14,31 +14,33 @@ Main data provider for feature modules. All repositories are stored in one modul
 graph LR
   subgraph :core
     :core:data["data"]
+    :core:datastore["datastore"]
     :core:model["model"]
     :core:common["common"]
-    :core:remote["remote"]
     :core:evaluatto["evaluatto"]
     :core:database["database"]
-    :core:themmo["themmo"]
-    :core:datastore["datastore"]
+    :core:remote["remote"]
   end
   subgraph :feature
-    :feature:converter["converter"]
-    :feature:datecalculator["datecalculator"]
-    :feature:timezone["timezone"]
+    :feature:settings["settings"]
     :feature:calculator["calculator"]
+    :feature:converter["converter"]
+    :feature:timezone["timezone"]
+    :feature:datecalculator["datecalculator"]
+    :feature:glance["glance"]
   end
-  :feature:converter --> :core:data
-  :feature:datecalculator --> :core:data
-  :feature:timezone --> :core:data
-  :core:data --> :core:model
-  :core:data --> :core:common
-  :core:data --> :core:remote
-  :core:data --> :core:evaluatto
-  :core:data --> :core:database
-  :core:data --> :core:themmo
+  :feature:settings --> :core:data
   :core:datastore --> :core:data
   :feature:calculator --> :core:data
+  :feature:converter --> :core:data
+  :feature:timezone --> :core:data
+  :feature:datecalculator --> :core:data
+  :core:data --> :core:model
+  :core:data --> :core:common
+  :core:data --> :core:evaluatto
+  :core:data --> :core:database
+  :core:data --> :core:remote
+  :feature:glance --> :core:data
 
 classDef focus fill:#769566,stroke:#fff,stroke-width:2px,color:#fff;
 class :core:data focus

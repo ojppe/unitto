@@ -1,3 +1,21 @@
+## Graph
+
+```mermaid
+%%{
+  init: {
+    'theme': 'dark'
+  }
+}%%
+
+graph LR
+  subgraph :core
+    :core:common["common"]
+  end
+  :core:common --> :kt-math
+
+classDef focus fill:#769566,stroke:#fff,stroke-width:2px,color:#fff;
+class :kt-math focus
+```
 ## kt-math wasmJs port
 - Included to simplify build logic and quickly apply changes
 - jvm target was kept for kmp and tests

@@ -13,38 +13,39 @@ Utilities, objects and resources shared between modules.
 
 graph LR
   subgraph :core
-    :core:navigation["navigation"]
+    :core:database["database"]
     :core:common["common"]
+    :core:evaluatto["evaluatto"]
+    :core:datastore["datastore"]
     :core:model["model"]
     :core:data["data"]
     :core:ui["ui"]
-    :core:evaluatto["evaluatto"]
-    :core:datastore["datastore"]
+    :core:navigation["navigation"]
   end
   subgraph :feature
-    :feature:converter["converter"]
     :feature:settings["settings"]
-    :feature:datecalculator["datecalculator"]
-    :feature:timezone["timezone"]
-    :feature:glance["glance"]
-    :feature:graphing["graphing"]
     :feature:bodymass["bodymass"]
     :feature:calculator["calculator"]
+    :feature:converter["converter"]
+    :feature:timezone["timezone"]
+    :feature:datecalculator["datecalculator"]
+    :feature:glance["glance"]
   end
-  :core:navigation --> :core:common
-  :feature:converter --> :core:common
+  :core:database --> :core:common
+  :core:common --> :kt-math
   :feature:settings --> :core:common
-  :core:model --> :core:common
-  :feature:datecalculator --> :core:common
-  :feature:timezone --> :core:common
-  :core:data --> :core:common
-  :core:ui --> :core:common
-  :feature:glance --> :core:common
-  :feature:graphing --> :core:common
   :core:evaluatto --> :core:common
   :core:datastore --> :core:common
   :feature:bodymass --> :core:common
+  :core:model --> :core:common
   :feature:calculator --> :core:common
+  :feature:converter --> :core:common
+  :feature:timezone --> :core:common
+  :feature:datecalculator --> :core:common
+  :core:data --> :core:common
+  :core:ui --> :core:common
+  :feature:glance --> :core:common
+  :core:navigation --> :core:common
 
 classDef focus fill:#769566,stroke:#fff,stroke-width:2px,color:#fff;
 class :core:common focus

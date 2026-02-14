@@ -22,7 +22,7 @@ graph LR
   subgraph :feature
     :feature:bodymass["bodymass"]
   end
-  :app --> :feature:bodymass
+  :sharedApp --> :feature:bodymass
   :feature:bodymass --> :core:common
   :feature:bodymass --> :core:ui
   :feature:bodymass --> :core:navigation

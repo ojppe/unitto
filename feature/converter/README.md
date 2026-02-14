@@ -25,6 +25,7 @@ graph LR
   subgraph :feature
     :feature:converter["converter"]
   end
+  :sharedApp --> :feature:converter
   :feature:converter --> :core:common
   :feature:converter --> :core:ui
   :feature:converter --> :core:navigation
@@ -33,7 +34,6 @@ graph LR
   :feature:converter --> :core:evaluatto
   :feature:converter --> :core:data
   :feature:converter --> :core:model
-  :app --> :feature:converter
 
 classDef focus fill:#769566,stroke:#fff,stroke-width:2px,color:#fff;
 class :feature:converter focus

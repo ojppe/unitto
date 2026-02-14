@@ -13,36 +13,37 @@ Main module that glues everything together. Navigation host and Themmo live here
 
 graph LR
   subgraph :core
+    :core:themmo["themmo"]
     :core:navigation["navigation"]
+    :core:database["database"]
+    :core:datastore["datastore"]
     :core:designsystem["designsystem"]
     :core:ui["ui"]
-    :core:themmo["themmo"]
-    :core:datastore["datastore"]
   end
   subgraph :feature
-    :feature:bodymass["bodymass"]
+    :feature:glance["glance"]
     :feature:calculator["calculator"]
     :feature:converter["converter"]
+    :feature:bodymass["bodymass"]
     :feature:datecalculator["datecalculator"]
-    :feature:glance["glance"]
-    :feature:graphing["graphing"]
     :feature:timezone["timezone"]
     :feature:settings["settings"]
   end
-  :app --> :core:navigation
-  :app --> :core:designsystem
-  :app --> :core:ui
-  :app --> :core:themmo
-  :app --> :core:datastore
-  :app --> :feature:bodymass
-  :app --> :feature:calculator
-  :app --> :feature:converter
-  :app --> :feature:datecalculator
-  :app --> :feature:glance
-  :app --> :feature:graphing
-  :app --> :feature:timezone
-  :app --> :feature:settings
+  :sharedApp --> :feature:glance
+  :sharedApp --> :core:themmo
+  :sharedApp --> :core:navigation
+  :sharedApp --> :core:database
+  :sharedApp --> :core:datastore
+  :sharedApp --> :core:designsystem
+  :sharedApp --> :core:ui
+  :sharedApp --> :feature:calculator
+  :sharedApp --> :feature:converter
+  :sharedApp --> :feature:bodymass
+  :sharedApp --> :feature:datecalculator
+  :sharedApp --> :feature:timezone
+  :sharedApp --> :feature:settings
+  :androidApp --> :sharedApp
 
 classDef focus fill:#769566,stroke:#fff,stroke-width:2px,color:#fff;
-class :app focus
+class :sharedApp focus
 ```

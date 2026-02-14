@@ -24,7 +24,7 @@ graph LR
   subgraph :feature
     :feature:datecalculator["datecalculator"]
   end
-  :app --> :feature:datecalculator
+  :sharedApp --> :feature:datecalculator
   :feature:datecalculator --> :core:common
   :feature:datecalculator --> :core:ui
   :feature:datecalculator --> :core:navigation

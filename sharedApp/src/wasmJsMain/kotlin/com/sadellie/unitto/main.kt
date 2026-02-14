@@ -84,7 +84,7 @@ fun main() {
 private fun App() {
   val appPreferences = remember {
     AppPreferences(
-      themingMode = ThemingMode.FORCE_DARK,
+      themingMode = ThemingMode.AUTO,
       enableDynamicTheme = false,
       enableAmoledTheme = false,
       customColor = 16L,

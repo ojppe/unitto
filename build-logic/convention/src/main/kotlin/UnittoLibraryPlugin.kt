@@ -50,7 +50,7 @@ class UnittoMultiplatformLibraryPlugin : Plugin<Project> {
           minSdk = 23
           @OptIn(ExperimentalKotlinGradlePluginApi::class)
           compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_11)
+            jvmTarget.set(JvmTarget.JVM_21)
             enableCoreLibraryDesugaring = true
           }
           androidResources { enable = true }
@@ -110,8 +110,8 @@ class UnittoLibraryPlugin : Plugin<Project> {
         packaging.resources.excludes.add("/META-INF/{AL2.0,LGPL2.1}")
 
         compileOptions {
-          sourceCompatibility = JavaVersion.VERSION_11
-          targetCompatibility = JavaVersion.VERSION_11
+          sourceCompatibility = JavaVersion.VERSION_21
+          targetCompatibility = JavaVersion.VERSION_21
           isCoreLibraryDesugaringEnabled = true
         }
 
@@ -154,7 +154,7 @@ private inline fun <reified T : KotlinBaseExtension> Project.configureKotlin() =
         else -> error("Unsupported project extension $this ${T::class}")
       }
 
-    compilerOptions.jvmTarget = JvmTarget.JVM_11
+    compilerOptions.jvmTarget = JvmTarget.JVM_21
     compilerOptions.allWarningsAsErrors = warningsAsErrors.toBoolean()
     compilerOptions.freeCompilerArgs.addAll(
       "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",

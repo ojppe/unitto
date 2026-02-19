@@ -23,9 +23,9 @@ plugins {
 }
 
 group = "com.sadellie.unitto.buildlogic"
-java.sourceCompatibility = JavaVersion.VERSION_17
-java.targetCompatibility = JavaVersion.VERSION_17
-kotlin.compilerOptions.jvmTarget = JvmTarget.JVM_17
+java.sourceCompatibility = JavaVersion.VERSION_21
+java.targetCompatibility = JavaVersion.VERSION_21
+kotlin.compilerOptions.jvmTarget = JvmTarget.JVM_21
 
 tasks {
   validatePlugins {

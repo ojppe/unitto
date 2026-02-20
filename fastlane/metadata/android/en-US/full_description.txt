@@ -7,11 +7,12 @@ Calculator
 • Copy, paste, save and share expression results
 • Trigonometric functions
 • Fractional output
+• Optional Indian numbering system
 
 Unit converter
 • 601 units
+• Currency converter (uses internet)
 • Home screen widget
-• Built-in currency converter
 • Favorite units
 • Organize unit groups
 • Smart search algorithm
@@ -29,3 +30,4 @@ Body mass index
 • Get instant and accurate results
 
 Permissions and Data? Visit: https://github.com/sadellie/unitto/security/
+Try web: https://sadellie.github.com/unitto/app
